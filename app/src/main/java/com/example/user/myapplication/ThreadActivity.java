@@ -18,8 +18,6 @@ public class ThreadActivity implements  Runnable{
         main.iv.setImageBitmap(main.mBitmap);
         main.mCanvas=new Canvas(main.mBitmap);
         main.drawKotak();
-        //int mColorBackground= ResourcesCompat.getColor(getResources(),R.color.colorPrimary,null);
-        //mCanvas.drawColor(mColorBackground);
         main.iv.invalidate();
     }
 }

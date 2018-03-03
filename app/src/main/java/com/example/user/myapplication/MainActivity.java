@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected GestureDetector mGestureDetector;
     protected Bitmap mBitmap;
     protected Canvas mCanvas;
+    protected Paint paint;
+    protected Rect[] rectList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,31 +42,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-
+        this.rectList=new Rect[8];
         this.mGestureDetector=new GestureDetector(this,this);
         this.spinner.setAdapter(adapter);
         this.spinner.setOnItemSelectedListener(this);
         this.button1.setOnClickListener(this);
         this.button2.setOnClickListener(this);
-
-
+        this.iv.setOnTouchListener(this);
+        this.paint = new Paint();
+        this.paint.setColor(Color.BLACK);
+        this.paint.setStrokeWidth(5);
+        this.paint.setStyle(Paint.Style.STROKE);
+        this.iv.post(new ThreadActivity(this));
     }
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        this.mBitmap=Bitmap.createBitmap(this.iv.getWidth(),this.iv.getHeight(),Bitmap.Config.ARGB_8888);
-        this.iv.setImageBitmap(mBitmap);
-        this.mCanvas=new Canvas(mBitmap);
 
-        int mColorBackground= ResourcesCompat.getColor(getResources(),R.color.colorPrimary,null);
-        mCanvas.drawColor(mColorBackground);
-        this.iv.invalidate();
-    }
+
 
     @Override
     public void onClick(View view) {
 
 
+    }
+
+    public void drawKotak(){
+        int x = 25;
+        int y = 25;
+        int size = 150;
+        for(int i  = 0;i<8;i++){
+            Rect rectData = new Rect(x,y,x+size,y+size);
+            rectList[i]=rectData;
+            if(i!=3){
+                x+=25+size;
+            }
+            else{
+                x=25;
+                y+=25+size;
+            }
+        }
+        drawKeView();
+    }
+
+    public void drawKeView(){
+        for (int i  = 0;i<rectList.length;i++){
+            this.mCanvas.drawRect(rectList[i],this.paint);
+        }
     }
 
     @Override
