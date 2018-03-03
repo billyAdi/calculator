@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int y = 25;
         int size = 150;
         for(int i  = 0;i<8;i++){
-            Rect rectData = new Rect(x,y,size,size);
+            Rect rectData = new Rect(x,y,x+size,y+size);
             rectList[i]=rectData;
             if(i!=3){
                 x+=25+size;
@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         drawKeView();
+    }
     }
 
     public void drawKeView(){
