@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected Bitmap mBitmap;
     protected Canvas mCanvas;
     protected Paint paint;
+    protected Rect[] rectList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-
+        this.rectList=new Rect[8];
         this.mGestureDetector=new GestureDetector(this,this);
         this.spinner.setAdapter(adapter);
         this.spinner.setOnItemSelectedListener(this);
@@ -69,15 +71,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void drawKotak(){
         int x = 25;
         int y = 25;
-        int size = 50;
+        int size = 150;
         for(int i  = 0;i<8;i++){
-            this.mCanvas.drawRect(x, y, x+size, y+size, this.paint);
-            if(i<4 || i>4){
-                x+=75;
+            Rect rectData = new Rect(x,y,size,size);
+            rectList[i]=rectData;
+            if(i!=3){
+                x+=25+size;
             }
             else{
-                y+=75;
+                x=25;
+                y+=25+size;
             }
+        }
+        drawKeView();
+    }
+
+    public void drawKeView(){
+        for (int i  = 0;i<rectList.length;i++){
+            this.mCanvas.drawRect(rectList[i],this.paint);
         }
     }
 
