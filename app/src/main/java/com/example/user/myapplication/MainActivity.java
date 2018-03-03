@@ -61,8 +61,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-
-
+        Paint paint=new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.FILL);
+        this.paint.setColor(Color.BLUE);
+       this.paint.setStyle(Paint.Style.FILL);
+        paint.setTextSize(50);  //set text size
+        float w = paint.measureText("123")/2;
+        float textSize = paint.getTextSize();
+        paint.setTextAlign(Paint.Align.CENTER);
+        this.mCanvas.drawRect(300-w, 300 - textSize, 300 + w, 300, this.paint);
+        this.mCanvas.drawText("123", 300, 300 ,paint); //x=300,y=300
     }
     
     public boolean insideRect(float x,float y){
