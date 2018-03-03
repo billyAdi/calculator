@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        return true;
+        return this.mGestureDetector.onTouchEvent(motionEvent);
     }
 
     @Override
