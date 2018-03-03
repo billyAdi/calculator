@@ -63,7 +63,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+    
+    public boolean insideRect(float x,float y){
+        for(int i = 0;i<rectList.length;i++) {
+            if (rectList[i].left<=x && rectList[i].right>=x) {
+                if(rectList[i].top<=y&&rectList[i].bottom>=y){
+                    return true;
+                }
+            }
 
+            }
+
+        return false;
+    }
+    
     public void drawKotak(){
         int x = 25;
         int y = 25;
@@ -125,7 +138,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onLongPress(MotionEvent motionEvent) {
-
+        if(insideRect(motionEvent.getX(),motionEvent.getY())){
+            Log.d("test","true");
+            System.out.println("TRUE");
+        }
+        else{
+            Log.d("test","false");
+        }
     }
 
     @Override
