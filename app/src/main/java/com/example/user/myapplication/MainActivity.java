@@ -156,8 +156,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onTouch(View view, MotionEvent motionEvent) {
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_MOVE:
+                if(kotakYangDiDrag!=null){
                 kotakYangDiDrag.gerakinKotak((int)motionEvent.getX(),(int)motionEvent.getY());
                 iv.invalidate();
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 KotakExtension ext = insideRect(motionEvent.getX(),motionEvent.getY());
