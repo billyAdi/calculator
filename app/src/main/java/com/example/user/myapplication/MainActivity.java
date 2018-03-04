@@ -154,6 +154,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_MOVE:
+                kotakYangDiDrag.gerakinKotak((int)motionEvent.getX(),(int)motionEvent.getY());
+                iv.invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                kotakYangDiDrag = null;
+                break;
+
+
+        }
         return this.mGestureDetector.onTouchEvent(motionEvent);
     }
 
@@ -179,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onLongPress(MotionEvent motionEvent) {
-        IsiKotak temp =insideRect(motionEvent.getX(),motionEvent.getY();
+        IsiKotak temp =isIsi(motionEvent.getX(),motionEvent.getY());
         if(temp!=null){
             Log.d("test","true");
             kotakYangDiDrag=temp;
