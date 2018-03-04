@@ -27,12 +27,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected Canvas mCanvas;
     protected Paint paint;
     protected KotakExtension[] rectList;
+    private IsiKotak kotakYangDiDrag;
+    private ArrayList<IsiKotak> daftarKotakYangDibuat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.daftarKotakYangDibuat=new ArrayList<IsiKotak>();
         this.button1=this.findViewById(R.id.btn_add1);
         this.button2=this.findViewById(R.id.btn_add2);
         this.spinner=this.findViewById(R.id.spinner);
