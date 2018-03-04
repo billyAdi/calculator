@@ -81,20 +81,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.mCanvas.drawText(isi.getText(), isi.posisiTengahX(), isi.posisiTengahY() ,paint); //x=300,y=300
     }
     
-    public boolean isIsi(float x,float y){
+    public IsiKotak isIsi(float x,float y){
         int i = 0;
         while(i!=daftarKotakYangDibuat.size()) {
             Rect rectTemp = daftarKotakYangDibuat.get(i).getRect();
             if (rectTemp.left<=x && rectTemp.right>=x) {
                 if(rectTemp.top<=y&&rectTemp.bottom>=y){
-                    return true;
+                    return daftarKotakYangDibuat.get(i);
                 }
             }
             i++;
 
         }
 
-        return false;
+        return null;
     }
 
     public KotakExtension insideRect(float x,float y){
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
 
-            }
+        }
 
         return null;
     }
