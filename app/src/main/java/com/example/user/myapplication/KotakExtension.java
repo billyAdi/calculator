@@ -28,4 +28,12 @@ public class KotakExtension{
     public Rect getRect(){
         return this.rect;
     }
+    
+        public int posisiTengahX(){
+        return (this.rect.right+this.rect.left)/2;
+    }
+
+    public int posisiTengahY(){
+        return (this.rect.top+this.rect.bottom)/2;
+    }
 }
