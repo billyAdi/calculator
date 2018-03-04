@@ -76,14 +76,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.drawKotak();
         this.paint1.setStyle(Paint.Style.FILL);
         this.paint1.setColor(Color.BLUE);
-        if(this.daftarKotakYangDibuat.size()>0){
-            for (int i=0;i<this.daftarKotakYangDibuat.size();i++){
-                this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(i).getRect(),this.paint1);
-                this.mCanvas.drawText(this.daftarKotakYangDibuat.get(i).getText(),this.daftarKotakYangDibuat.get(i).posisiTengahX(),this.daftarKotakYangDibuat.get(i).posisiTengahY(),this.paint2);
+        //if(this.daftarKotakYangDibuat.size()>0){
+        //    for (int i=0;i<this.daftarKotakYangDibuat.size();i++){
+         //       this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(i).getRect(),this.paint1);
+           //     this.mCanvas.drawText(this.daftarKotakYangDibuat.get(i).getText(),this.daftarKotakYangDibuat.get(i).posisiTengahX(),this.daftarKotakYangDibuat.get(i).posisiTengahY(),this.paint2);
                 //blm beres
                 //klo misal kotak ke 1 lagi di drag, ga usah di gambar
-            }
-        }
+           // }
+       // }
         this.iv.invalidate();
     }
 
@@ -241,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 this.mCanvas.drawRect( this.daftarKotakYangDibuat.get(0).getRect(),this.paint1);
+                this.mCanvas.drawText(this.daftarKotakYangDibuat.get(0).getText(), this.daftarKotakYangDibuat.get(0).posisiTengahX(), this.daftarKotakYangDibuat.get(0).posisiTengahY()  ,this.paint2);
                 this.iv.invalidate();
 
                 startX=motionEvent1.getX();
