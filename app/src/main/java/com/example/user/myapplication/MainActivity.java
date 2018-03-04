@@ -200,9 +200,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return this.mGestureDetector.onTouchEvent(motionEvent);
 
     }
-
+    double startX,startY;
     @Override
     public boolean onDown(MotionEvent motionEvent) {
+        if (this.daftarKotakYangDibuat.get(0).getRect().left<=motionEvent.getX() &&(this.daftarKotakYangDibuat.get(0).getRect().right>=motionEvent.getX())) {
+            if((this.daftarKotakYangDibuat.get(0).getRect().top<=motionEvent.getY()&&(this.daftarKotakYangDibuat.get(0).getRect().bottom>=motionEvent.getY()))){
+                // this.resetCanvas();
+                //this.mCanvas.drawRect(new Rect((int)motionEvent1.getX()-75,(int)motionEvent1.getY()-75,(int)motionEvent1.getX()+150-75,(int)motionEvent1.getY()+150-75),this.paint1);
+                // this.iv.invalidate();
+                startX=motionEvent.getX();
+                startY=motionEvent.getY();
+            }}
         return true;
     }
 
@@ -220,9 +228,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
         System.out.println("scrollllllllll");
 
-        this.resetCanvas();
-        this.mCanvas.drawRect(new Rect((int)motionEvent1.getX()-75,(int)motionEvent1.getY()-75,(int)motionEvent1.getX()+150-75,(int)motionEvent1.getY()+150-75),this.paint1);
-        this.iv.invalidate();
+
+        if (this.daftarKotakYangDibuat.get(0).getRect().left<=motionEvent1.getX() &&(this.daftarKotakYangDibuat.get(0).getRect().right>=motionEvent1.getX())) {
+            if((this.daftarKotakYangDibuat.get(0).getRect().top<=motionEvent1.getY()&&(this.daftarKotakYangDibuat.get(0).getRect().bottom>=motionEvent1.getY()))){
+                int selisihX=(int)(motionEvent1.getX()-startX);
+                int selisihY=(int)(motionEvent1.getY()-startY);
+                this.resetCanvas();
+                this.daftarKotakYangDibuat.get(0).getRect().left+=selisihX;
+                this.daftarKotakYangDibuat.get(0).getRect().top+=selisihY;
+                this.daftarKotakYangDibuat.get(0).getRect().bottom= this.daftarKotakYangDibuat.get(0).getRect().top+this.daftarKotakYangDibuat.get(0).size;
+                this.daftarKotakYangDibuat.get(0).getRect().right= this.daftarKotakYangDibuat.get(0).getRect().left+this.daftarKotakYangDibuat.get(0).size;
+
+
+                this.mCanvas.drawRect( this.daftarKotakYangDibuat.get(0).getRect(),this.paint1);
+                this.iv.invalidate();
+
+                startX=motionEvent1.getX();
+                startY=motionEvent1.getY();
+
+            }
+        }
+
+
+
         return true;
     }
 
