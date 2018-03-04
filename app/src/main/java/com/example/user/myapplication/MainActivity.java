@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected Bitmap mBitmap;
     protected Canvas mCanvas;
     protected Paint paint;
-    protected Rect[] rectList;
+    protected KotakExtension[] rectList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        this.rectList=new Rect[8];
+        this.rectList=new KotakExtension[8];
         this.mGestureDetector=new GestureDetector(this,this);
         this.spinner.setAdapter(adapter);
         this.spinner.setOnItemSelectedListener(this);
@@ -76,8 +76,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     
     public boolean insideRect(float x,float y){
         for(int i = 0;i<rectList.length;i++) {
-            if (rectList[i].left<=x && rectList[i].right>=x) {
-                if(rectList[i].top<=y&&rectList[i].bottom>=y){
+            Rect rectTemp = rectList[i].getRect();
+            if (rectTemp.left<=x && rectTemp.right>=x) {
+                if(rectTemp.top<=y&&rectTemp.bottom>=y){
                     return true;
                 }
             }
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int size = 150;
         for(int i  = 0;i<8;i++){
             Rect rectData = new Rect(x,y,x+size,y+size);
-            rectList[i]=rectData;
+            rectList[i]=new KotakExtension(rectData);
             if(i!=3){
                 x+=25+size;
             }
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void drawKeView(){
         for (int i  = 0;i<rectList.length;i++){
-            this.mCanvas.drawRect(rectList[i],this.paint);
+            this.mCanvas.drawRect(rectList[i].getRect(),this.paint);
         }
     }
 
