@@ -160,6 +160,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 iv.invalidate();
                 break;
             case MotionEvent.ACTION_UP:
+                KotakExtension ext = insideRect(motionEvent.getX(),motionEvent.getY());
+                if(ext!=null){
+                    moveKotakKeTengah(ext);
+                    iv.invalidate();
+                }
                 kotakYangDiDrag = null;
                 break;
 
