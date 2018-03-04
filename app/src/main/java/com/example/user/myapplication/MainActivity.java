@@ -64,17 +64,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+
         Paint paint=new Paint();
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.FILL);
+
         this.paint.setColor(Color.BLUE);
-       this.paint.setStyle(Paint.Style.FILL);
+        this.paint.setStyle(Paint.Style.FILL);
         paint.setTextSize(50);  //set text size
         float w = paint.measureText("123")/2;
         float textSize = paint.getTextSize();
         paint.setTextAlign(Paint.Align.CENTER);
-        this.mCanvas.drawRect(300-w, 300 - textSize, 300 + w, 300, this.paint);
-        this.mCanvas.drawText("123", 300, 300 ,paint); //x=300,y=300
+        IsiKotak isi = new IsiKotak(new Rect(300-(int)w,300-(int)textSize,300+(int)w,300),"123");
+        daftarKotakYangDibuat.add(isi);
+        this.mCanvas.drawRect(isi.getRect(), this.paint);
+        this.mCanvas.drawText(isi.getText(), isi.posisiTengahX(), isi.posisiTengahY() ,paint); //x=300,y=300
     }
     
     public boolean isIsi(float x,float y){
@@ -175,9 +179,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onLongPress(MotionEvent motionEvent) {
-        if(insideRect(motionEvent.getX(),motionEvent.getY())){
+        IsiKotak temp =insideRect(motionEvent.getX(),motionEvent.getY();
+        if(temp!=null){
             Log.d("test","true");
-            System.out.println("TRUE");
+            kotakYangDiDrag=temp;
         }
         else{
             Log.d("test","false");
