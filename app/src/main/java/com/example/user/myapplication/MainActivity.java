@@ -74,18 +74,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.mCanvas.drawText("123", 300, 300 ,paint); //x=300,y=300
     }
     
-    public boolean insideRect(float x,float y){
-        for(int i = 0;i<rectList.length;i++) {
-            Rect rectTemp = rectList[i].getRect();
+    public boolean isIsi(float x,float y){
+        int i = 0;
+        while(i!=daftarKotakYangDibuat.size()) {
+            Rect rectTemp = daftarKotakYangDibuat.get(i).getRect();
             if (rectTemp.left<=x && rectTemp.right>=x) {
                 if(rectTemp.top<=y&&rectTemp.bottom>=y){
                     return true;
                 }
             }
+            i++;
+
+        }
+
+        return false;
+    }
+
+    public KotakExtension insideRect(float x,float y){
+        for(int i = 0;i<rectList.length;i++) {
+            Rect rectTemp = rectList[i].getRect();
+            if (rectTemp.left<=x && rectTemp.right>=x) {
+                if(rectTemp.top<=y&&rectTemp.bottom>=y){
+                    return rectList[i];
+                }
+            }
 
             }
 
-        return false;
+        return null;
+    }
+
+    public void moveKotakKeTengah(KotakExtension ext){
+        if(kotakYangDiDrag!=null){
+            Rect tempatKotak= ext.getRect();
+            kotakYangDiDrag.getRect().set(tempatKotak.left,tempatKotak.right,tempatKotak.top,tempatKotak.bottom);
+        }
     }
     
     public void drawKotak(){
