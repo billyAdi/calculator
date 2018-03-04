@@ -1,4 +1,4 @@
-boolean nextAngka=true;
+/**boolean nextAngka=true;
 
 public boolean parentheses(String bacaan){
     Stack simbol = new Stack();
@@ -44,3 +44,4 @@ public boolean parentheses(String bacaan){
         }
          
          
+*/
