@@ -8,9 +8,13 @@ import android.graphics.Rect;
 
 public class IsiKotak extends KotakExtension{
     String text;
-    public IsiKotak(Rect rect,String text) {
+    int size,ukuranText;
+
+    public IsiKotak(Rect rect,String text,int size,int ukuran) {
         super(rect);
         this.text=text;
+        this.size=size;
+        this.ukuranText=ukuran;
     }
 
     public String getText(){
