@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.y=400;
         this.indeksAktif=-1;
         this.iv.post(new ThreadActivity(this));
+
+
     }
 
 
@@ -103,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        for (int i=0;i<8;i++){
+            Rect temp=this.rectList[i].getRect();
+            System.out.println(temp.left+" "+temp.right+" "+temp.top+" "+temp.bottom);
+        }
 
         String teks="";
         if(view.getId()==this.button1.getId()){
@@ -191,7 +197,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void moveKotakTengah(int posisi){
         if(this.indeksAktif!=-1){
             Rect tempatKotak= rectList[posisi].getRect();
-            this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().set(tempatKotak.left,tempatKotak.right,tempatKotak.top,tempatKotak.bottom);
+            //this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().set(tempatKotak.left,tempatKotak.right,tempatKotak.top,tempatKotak.bottom);
+            int temp1=tempatKotak.left+13;
+            int temp2=tempatKotak.top+13;
+            int temp3=this.daftarKotakYangDibuat.get(this.indeksAktif).size;
+            this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().set(temp1,temp2,temp1+temp3,temp2+temp3);
+            this.indeksAktif=-1;
+            this.resetCanvas();
+
+
+
         }
     }
 
@@ -254,12 +269,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              //   }
               //  kotakYangDiDrag = null;
                 if(this.indeksAktif!=-1){
-                    int pos = insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahX(),this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahY());
+                    int pos = insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().left,this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().top);
                     if(pos!=-1){
 
                         yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
                         //Log.d("aw",yangAkanDihitung[pos].getText());
-                        //moveKotakTengah(pos);
+                        moveKotakTengah(pos);
                         for(int i = 0;i<8;i++){
                             if(yangAkanDihitung[i]!=null){
                                 Log.d("aw"+i," "+yangAkanDihitung[i].getText());
@@ -267,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         }
                     }
+                    System.out.println("ada di slot "+pos);
                 }
 
                 this.indeksAktif=-1;
@@ -285,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.indeksAktif=temp;
             startX=motionEvent.getX();
             startY=motionEvent.getY();
-            System.out.println("inside "+this.indeksAktif);
+            //System.out.println("inside "+this.indeksAktif);
             for(int i =0;i<yangAkanDihitung.length;i++){
                 if(yangAkanDihitung[i]==this.daftarKotakYangDibuat.get(this.indeksAktif)){
                     yangAkanDihitung[i]=null;
