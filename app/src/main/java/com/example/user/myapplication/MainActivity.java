@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private IsiKotak kotakYangDiDrag;
     private ArrayList<IsiKotak> daftarKotakYangDibuat;
     private int x,y,indeksAktif;
+    private IsiKotak[] yangAkanDihitung;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         this.rectList=new KotakExtension[8];
+        this.yangAkanDihitung=new IsiKotak[8];
+
         this.mGestureDetector=new GestureDetector(this,this);
         this.spinner.setAdapter(adapter);
         this.spinner.setOnItemSelectedListener(this);
@@ -147,18 +151,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return null;
     }
 
-    public KotakExtension insideRect(float x,float y){
+    public int insideRect(float x,float y){
         for(int i = 0;i<rectList.length;i++) {
             Rect rectTemp = rectList[i].getRect();
             if (rectTemp.left<=x && rectTemp.right>=x) {
                 if(rectTemp.top<=y&&rectTemp.bottom>=y){
-                    return rectList[i];
+                    return i;
                 }
             }
 
         }
 
-        return null;
+        return -1;
     }
 
     public int insideBlueRect(float x,float y){
@@ -183,7 +187,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             kotakYangDiDrag.getRect().set(tempatKotak.left,tempatKotak.right,tempatKotak.top,tempatKotak.bottom);
         }
     }
-    
+
+    public void moveKotakTengah(int posisi){
+        if(this.indeksAktif!=-1){
+            Rect tempatKotak= rectList[posisi].getRect();
+            this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().set(tempatKotak.left,tempatKotak.right,tempatKotak.top,tempatKotak.bottom);
+        }
+    }
+
     public void drawKotak(){
         int x = 25;
         int y = 25;
@@ -242,6 +253,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
              //       iv.invalidate();
              //   }
               //  kotakYangDiDrag = null;
+                if(this.indeksAktif!=-1){
+                    int pos = insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahX(),this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahY());
+                    if(pos!=-1){
+
+                        yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
+                        //Log.d("aw",yangAkanDihitung[pos].getText());
+                        //moveKotakTengah(pos);
+                        for(int i = 0;i<8;i++){
+                            if(yangAkanDihitung[i]!=null){
+                                Log.d("aw"+i," "+yangAkanDihitung[i].getText());
+
+                            }
+                        }
+                    }
+                }
+
                 this.indeksAktif=-1;
                 break;
 
@@ -259,6 +286,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startX=motionEvent.getX();
             startY=motionEvent.getY();
             System.out.println("inside "+this.indeksAktif);
+            for(int i =0;i<yangAkanDihitung.length;i++){
+                if(yangAkanDihitung[i]==this.daftarKotakYangDibuat.get(this.indeksAktif)){
+                    yangAkanDihitung[i]=null;
+                }
+            }
         }
      //   if (this.daftarKotakYangDibuat.get(0).getRect().left<=motionEvent.getX() &&(this.daftarKotakYangDibuat.get(0).getRect().right>=motionEvent.getX())) {
         //    if((this.daftarKotakYangDibuat.get(0).getRect().top<=motionEvent.getY()&&(this.daftarKotakYangDibuat.get(0).getRect().bottom>=motionEvent.getY()))){
@@ -283,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        System.out.println("scrollllllllll");
+        //System.out.println("scrollllllllll");
 
 
        if(this.indeksAktif!=-1) {
