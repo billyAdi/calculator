@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Tugas Kelompok.iml" filepath="$PROJECT_DIR$/Tugas Kelompok.iml" />
+      <module fileurl="file://C:\Users\user\Documents\GitHub\calculator\calculator\Tugas Kelompok.iml" filepath="C:\Users\user\Documents\GitHub\calculator\calculator\Tugas Kelompok.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/calculator.iml" filepath="$PROJECT_DIR$/calculator.iml" />
     </modules>
   </component>
 </project>
