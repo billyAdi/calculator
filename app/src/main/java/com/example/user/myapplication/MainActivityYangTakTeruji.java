@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected Button button1,button2;
     protected Spinner spinner;
     protected ImageView iv;
-	protected ImageView hasilPerhitungan;
+    protected ImageView hasilPerhitungan;
     protected EditText et;
     protected GestureDetector mGestureDetector;
     protected Bitmap mBitmap;
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private IsiKotak kotakYangDiDrag;
     private ArrayList<IsiKotak> daftarKotakYangDibuat;
     private int x,y,indeksAktif;
+    private boolean nextAngka;
     private IsiKotak[] yangAkanDihitung;
 
     @Override
@@ -63,7 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.spinner.setOnItemSelectedListener(this);
         this.button1.setOnClickListener(this);
         this.button2.setOnClickListener(this);
-        this.iv.setOnTouchListener(this);
+
+        this.nextAngka=true;
         this.paint1 = new Paint();
         this.paint1.setColor(Color.BLACK);
         this.paint1.setStrokeWidth(5);
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-	
+
     public void resetCanvas(){
         this.mCanvas.drawColor(Color.WHITE);
         this.paint1.setColor(Color.BLACK);
@@ -103,67 +105,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         this.iv.invalidate();
     }
-	
-	public int hitung(int angkaAwal, String operator, int angkaNext){
-		
-		int result = 0;
-		if(operator=='+'){
-			result = angkaAwal+angkaNext;
-		}
-		else if(operator=='-'){
-			result = angkaAwal-angkaNext;
-		}
-		else if(operator=='/'){
-			result = angkaAwal/angkaNext;
-		}
-		else if(operator=='*'){
-			result = angkaAwal*angkaNext;
-		}
-		return result;
-		
-		
-	}
-	public int hasilHitung(ArrayList<String> str){
-		int i = 0;
-		int angkaTersimpan=0;
-		int angkaYangAkanDihitung=0;
-		String operator = "";
-		while(i!=str.length){
-			String next = str.get(i);
-			if(next=='+'|| next=='-' || next == '/' || next == '*'){
-                if(nextAngka==true){					
-                    break;   
+
+    public int hitung(int angkaAwal, String operator, int angkaNext){
+
+        int result = 0;
+        if(operator=="+"){
+            result = angkaAwal+angkaNext;
+        }
+        else if(operator=="-"){
+            result = angkaAwal-angkaNext;
+        }
+        else if(operator=="/"){
+            result = angkaAwal/angkaNext;
+        }
+        else if(operator=="*"){
+            result = angkaAwal*angkaNext;
+        }
+        return result;
+
+
+    }
+
+    public int hasilHitung(ArrayList<String> str) {
+        int i = 0;
+        int angkaTersimpan = 0;
+        int angkaYangAkanDihitung = 0;
+        String operator = "";
+        while (i != str.size()) {
+            String next = str.get(i);
+            if (next == "+" || next == "-" || next == "/" || next == "*") {
+                if (nextAngka == true) {
+                    break;
+                } else {
+                    nextAngka = true;
+                    operator = next;
+
                 }
-              else{
-				  nextAngka=true;
-				  operator = next;
-                  return true;
-              }
-          }
-            else{
-                if(nextAngka==true){
-                    nextAngka=false;
-					angkaYangAkanDihitung=Integer.parseInt(next);
-					if(operator==""){
-						angkaTersimpan=angkaYangAkanDihitung;
-						
-					}
-					else{
-						angkaTersimpan=hitung(angkaTersimpan,operator,angkaYangAkanDihitung);
-						operator=="";
-						
-					}
-					
-                    
+            } else {
+                if (nextAngka == true) {
+                    nextAngka = false;
+                    angkaYangAkanDihitung = Integer.parseInt(next);
+                    if (operator == "") {
+                        angkaTersimpan = angkaYangAkanDihitung;
+
+                    } else {
+                        angkaTersimpan = hitung(angkaTersimpan, operator, angkaYangAkanDihitung);
+                        operator = "";
+
+                    }
+
+
+                } else {
+                    break;
                 }
-				else{
-					break;
-				}
-                }
-				return angkaTersimpan;
-		}
-		
-	}
+            }
+        }
+        return angkaTersimpan;
+    }
     @Override
     public void onClick(View view) {
         for (int i=0;i<8;i++){
@@ -201,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-    
+
     public IsiKotak isIsi(float x,float y){
         int i = 0;
         while(i!=daftarKotakYangDibuat.size()) {
@@ -315,20 +313,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case MotionEvent.ACTION_MOVE:
-               // if(kotakYangDiDrag!=null){
-              //  kotakYangDiDrag.gerakinKotak((int)motionEvent.getX(),(int)motionEvent.getY());
-              //  iv.invalidate();
-              //  }
+                // if(kotakYangDiDrag!=null){
+                //  kotakYangDiDrag.gerakinKotak((int)motionEvent.getX(),(int)motionEvent.getY());
+                //  iv.invalidate();
+                //  }
 
                 //System.out.println("on movessssssssss");
                 break;
             case MotionEvent.ACTION_UP:
-             //   KotakExtension ext = insideRect(motionEvent.getX(),motionEvent.getY());
-             //   if(ext!=null){
-             //       moveKotakKeTengah(ext);
-             //       iv.invalidate();
-             //   }
-              //  kotakYangDiDrag = null;
+                //   KotakExtension ext = insideRect(motionEvent.getX(),motionEvent.getY());
+                //   if(ext!=null){
+                //       moveKotakKeTengah(ext);
+                //       iv.invalidate();
+                //   }
+                //  kotakYangDiDrag = null;
                 if(this.indeksAktif!=-1){
                     int pos = insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().left,this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().top);
                     if(pos!=-1){
@@ -336,18 +334,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
                         //Log.d("aw",yangAkanDihitung[pos].getText());
                         moveKotakTengah(pos);
-						ArrayList<String> hitung = new ArrayList<String>();
+                        ArrayList<String> hitung = new ArrayList<String>();
                         for(int i = 0;i<8;i++){
                             if(yangAkanDihitung[i]!=null){
                                 Log.d("aw"+i," "+yangAkanDihitung[i].getText());
-								hitung.add(yangAkanDihitung[i].getText());
+                                hitung.add(yangAkanDihitung[i].getText());
                             }
                         }
-						
-						if(hitung.length!=0){
-							Log.d("aw"+i," "+hasilHitung(hitung);
-						}
-						
+
+                        if(hitung.size()!=0){
+                            Log.d("aw"," "+hasilHitung(hitung));
+                        }
+
                     }
                     System.out.println("ada di slot "+pos);
                 }
@@ -375,14 +373,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
-     //   if (this.daftarKotakYangDibuat.get(0).getRect().left<=motionEvent.getX() &&(this.daftarKotakYangDibuat.get(0).getRect().right>=motionEvent.getX())) {
+        //   if (this.daftarKotakYangDibuat.get(0).getRect().left<=motionEvent.getX() &&(this.daftarKotakYangDibuat.get(0).getRect().right>=motionEvent.getX())) {
         //    if((this.daftarKotakYangDibuat.get(0).getRect().top<=motionEvent.getY()&&(this.daftarKotakYangDibuat.get(0).getRect().bottom>=motionEvent.getY()))){
-                // this.resetCanvas();
-                //this.mCanvas.drawRect(new Rect((int)motionEvent1.getX()-75,(int)motionEvent1.getY()-75,(int)motionEvent1.getX()+150-75,(int)motionEvent1.getY()+150-75),this.paint1);
-                // this.iv.invalidate();
-           //     startX=motionEvent.getX();
-            //    startY=motionEvent.getY();
-          //  }}
+        // this.resetCanvas();
+        //this.mCanvas.drawRect(new Rect((int)motionEvent1.getX()-75,(int)motionEvent1.getY()-75,(int)motionEvent1.getX()+150-75,(int)motionEvent1.getY()+150-75),this.paint1);
+        // this.iv.invalidate();
+        //     startX=motionEvent.getX();
+        //    startY=motionEvent.getY();
+        //  }}
         return true;
     }
 
@@ -401,24 +399,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //System.out.println("scrollllllllll");
 
 
-       if(this.indeksAktif!=-1) {
-           int selisihX = (int) (motionEvent1.getX() - startX);
-           int selisihY = (int) (motionEvent1.getY() - startY);
-           this.resetCanvas();
-           this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().left += selisihX;
-           this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().top += selisihY;
-           this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().bottom = this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().top + this.daftarKotakYangDibuat.get(this.indeksAktif).size;
-           this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().right = this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().left + this.daftarKotakYangDibuat.get(this.indeksAktif).size;
+        if(this.indeksAktif!=-1) {
+            int selisihX = (int) (motionEvent1.getX() - startX);
+            int selisihY = (int) (motionEvent1.getY() - startY);
+            this.resetCanvas();
+            this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().left += selisihX;
+            this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().top += selisihY;
+            this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().bottom = this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().top + this.daftarKotakYangDibuat.get(this.indeksAktif).size;
+            this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().right = this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().left + this.daftarKotakYangDibuat.get(this.indeksAktif).size;
 
 
-           this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(this.indeksAktif).getRect(), this.paint1);
-           this.mCanvas.drawText(this.daftarKotakYangDibuat.get(this.indeksAktif).getText(), this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahX(), this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahY(), this.paint2);
-           this.iv.invalidate();
+            this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(this.indeksAktif).getRect(), this.paint1);
+            this.mCanvas.drawText(this.daftarKotakYangDibuat.get(this.indeksAktif).getText(), this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahX(), this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahY(), this.paint2);
+            this.iv.invalidate();
 
-           startX = motionEvent1.getX();
-           startY = motionEvent1.getY();
+            startX = motionEvent1.getX();
+            startY = motionEvent1.getY();
 
-       }
+        }
 
 
 
