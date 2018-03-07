@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("masuk itungan");
         int result = 0;
         System.out.println(angkaAwal+"    aa"+angkaNext);
+        if(angkaNext!=Integer.MIN){
         if(operator.equals("+")){
             result = angkaAwal+angkaNext;
         }
@@ -121,6 +122,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if(operator.equals("*")){
             result = angkaAwal*angkaNext;
+        }
+            else{
+                result=angkaAwal;
+            }
         }
         else{
             result=angkaAwal;
@@ -147,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else{
                 angkaYangAkanDihitung=Integer.parseInt(str.get(j));
                 angkaTersimpan=hitung(angkaTersimpan,operator,angkaYangAkanDihitung);}
+                angkaYangAkanDihitung=Integer.MIN;
             }
             else{
                 operator = str.get(j);
