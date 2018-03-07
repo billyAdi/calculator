@@ -18,16 +18,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, View.OnTouchListener, GestureDetector.OnGestureListener{
-    protected Button button1,button2;
+    protected Button button1,button2,buttonReset,buttonCalculate;
     protected Spinner spinner;
     protected ImageView iv;
     protected ImageView hasilPerhitungan;
     protected EditText et;
+    protected TextView tv_hasil;
     protected GestureDetector mGestureDetector;
     protected Bitmap mBitmap;
     protected Canvas mCanvas;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int x,y,indeksAktif;
     private boolean nextAngka;
     private IsiKotak[] yangAkanDihitung;
-
+    private ArrayList<String> hitung;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +49,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.daftarKotakYangDibuat=new ArrayList<IsiKotak>();
         this.button1=this.findViewById(R.id.btn_add1);
         this.button2=this.findViewById(R.id.btn_add2);
+        this.buttonCalculate=this.findViewById(R.id.btn_calculate);
+        this.buttonReset=this.findViewById(R.id.btn_reset);
         this.spinner=this.findViewById(R.id.spinner);
         this.et=this.findViewById(R.id.et_number);
         this.iv=this.findViewById(R.id.iv);
-
+        this.tv_hasil=this.findViewById(R.id.tv_hasil);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.operator, android.R.layout.simple_spinner_item);
 
@@ -64,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.spinner.setOnItemSelectedListener(this);
         this.button1.setOnClickListener(this);
         this.button2.setOnClickListener(this);
+        this.buttonReset.setOnClickListener(this);
+        this.buttonCalculate.setOnClickListener(this);
         this.iv.setOnTouchListener(this);
         this.nextAngka=true;
         this.paint1 = new Paint();
@@ -106,40 +112,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        for (int i=0;i<8;i++){
-            Rect temp=this.rectList[i].getRect();
-            System.out.println(temp.left+" "+temp.right+" "+temp.top+" "+temp.bottom);
-        }
+        if(view.getId()==this.button1.getId()||view.getId()==this.button2.getId()){
+            for (int i=0;i<8;i++){
+                Rect temp=this.rectList[i].getRect();
+                System.out.println(temp.left+" "+temp.right+" "+temp.top+" "+temp.bottom);
+            }
 
-        String teks="";
-        if(view.getId()==this.button1.getId()){
-            teks=(String)this.spinner.getSelectedItem();
-        }
-        else if(view.getId()==this.button2.getId()){
-            teks=this.et.getText()+"";
-        }
+            String teks="";
+            if(view.getId()==this.button1.getId()){
+                teks=(String)this.spinner.getSelectedItem();
+            }
+            else if(view.getId()==this.button2.getId()){
+                teks=this.et.getText()+"";
+            }
 
-        if(!teks.equals("")){
+            if(!teks.equals("")){
 
-            this.paint1.setColor(Color.BLUE);
-            this.paint1.setStyle(Paint.Style.FILL);
-            int size = (5*iv.getWidth()/(6*6));
-            IsiKotak isi = new IsiKotak(new Rect(this.x,this.y ,this.x+size ,this.y+size ),teks,size,40);
-            daftarKotakYangDibuat.add(isi);
-            this.mCanvas.drawRect(isi.getRect(), this.paint1);
-            this.mCanvas.drawText(isi.getText(), isi.posisiTengahX(), isi.posisiTengahY()  ,this.paint2);
-            if(this.daftarKotakYangDibuat.size()%5!=0){
-                this.x=this.x+25+size;
+                this.paint1.setColor(Color.BLUE);
+                this.paint1.setStyle(Paint.Style.FILL);
+                int size = (5*iv.getWidth()/(6*6));
+                IsiKotak isi = new IsiKotak(new Rect(this.x,this.y ,this.x+size ,this.y+size ),teks,size,40);
+                daftarKotakYangDibuat.add(isi);
+                this.mCanvas.drawRect(isi.getRect(), this.paint1);
+                this.mCanvas.drawText(isi.getText(), isi.posisiTengahX(), isi.posisiTengahY()  ,this.paint2);
+                if(this.daftarKotakYangDibuat.size()%5!=0){
+                    this.x=this.x+25+size;
+                }
+                else{
+                    this.x=25;
+                    this.y=this.y+25+size;
+                }
             }
             else{
-                this.x=25;
-                this.y=this.y+25+size;
+                Toast toast=Toast.makeText(this,"Angka belum diisi",Toast.LENGTH_LONG);
+                toast.show();
             }
         }
-        else{
-            Toast toast=Toast.makeText(this,"Angka belum diisi",Toast.LENGTH_LONG);
-            toast.show();
+        else if(view.getId()==this.buttonCalculate.getId()){
+            double hasil=Hitungan.hasilHitung(hitung);
+            if(hasil%1==0){
+                this.tv_hasil.setText(hasil+"");
+            }
+            else{
+                String str=String.format("%.4f",hasil);
+                this.tv_hasil.setText(str);
+            }
+
         }
+        else if(view.getId()==this.buttonReset.getId()){
+            recreate();
+            this.et.setText("");
+            this.spinner.setSelection(0);
+        }
+
 
     }
 
@@ -257,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
                         //Log.d("aw",yangAkanDihitung[pos].getText());
                         moveKotakTengah(pos);
-                        ArrayList<String> hitung = new ArrayList<String>();
+                        hitung = new ArrayList<String>();
                         for(int i = 0;i<8;i++){
                             if(yangAkanDihitung[i]!=null){
                                 Log.d("aw"+i," "+yangAkanDihitung[i].getText());
