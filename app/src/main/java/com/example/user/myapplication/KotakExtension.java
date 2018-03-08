@@ -7,10 +7,11 @@ import android.graphics.Rect;
  */
 
 public class KotakExtension{
-    boolean terisi = false;
+    boolean terisi;
     Rect rect;
     public KotakExtension(Rect rect){
         this.rect=rect;
+        this.terisi=false;
     }
 
     public void isi(){

@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected Button button1,button2,buttonReset,buttonCalculate;
     protected Spinner spinner;
     protected ImageView iv;
-    protected ImageView hasilPerhitungan;
     protected EditText et;
     protected TextView tv_hasil;
     protected GestureDetector mGestureDetector;
@@ -35,10 +34,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected Canvas mCanvas;
     protected Paint paint1,paint2;
     protected KotakExtension[] rectList;
-    private IsiKotak kotakYangDiDrag;
     private ArrayList<IsiKotak> daftarKotakYangDibuat;
     private int x,y,indeksAktif;
-    private boolean nextAngka;
     private IsiKotak[] yangAkanDihitung;
     private ArrayList<String> hitung;
     @Override
@@ -71,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.buttonReset.setOnClickListener(this);
         this.buttonCalculate.setOnClickListener(this);
         this.iv.setOnTouchListener(this);
-        this.nextAngka=true;
         this.paint1 = new Paint();
         this.paint1.setColor(Color.BLACK);
         this.paint1.setStrokeWidth(5);
@@ -216,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-        return posisiKotak;
+        return posisiKotak;}
 
     public int insideBlueRect(float x,float y){
         for(int i = 0;i<this.daftarKotakYangDibuat.size();i++) {
@@ -236,7 +232,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void moveKotakTengah(int posisi){
         if(this.indeksAktif!=-1){
             Rect tempatKotak= rectList[posisi].getRect();
-            //this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().set(tempatKotak.left,tempatKotak.right,tempatKotak.top,tempatKotak.bottom);
 
             int temp3=this.daftarKotakYangDibuat.get(this.indeksAktif).size;
             int diff = (rectList[posisi].getRect().right-rectList[posisi].getRect().left-temp3)/2;
@@ -387,14 +382,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onLongPress(MotionEvent motionEvent) {
-        IsiKotak temp =isIsi(motionEvent.getX(),motionEvent.getY());
-        if(temp!=null){
-            Log.d("test","true");
-            kotakYangDiDrag=temp;
-        }
-        else{
-            Log.d("test","false");
-        }
+
     }
 
     @Override
