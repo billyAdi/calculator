@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if(view.getId()==this.buttonCalculate.getId()){
             double hasil=Hitungan.hasilHitung(hitung);
             if(hasil%1==0){
-                this.tv_hasil.setText(hasil+"");
+                this.tv_hasil.setText((int)hasil+"");
             }
             else{
                 String str=String.format("%.4f",hasil);
