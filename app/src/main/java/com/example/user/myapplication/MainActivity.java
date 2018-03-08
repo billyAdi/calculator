@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.x=25;
         this.y=400;
         this.flag=false;
+
         this.indeksAktif=-1;
         this.iv.post(new ThreadActivity(this));
 
@@ -355,6 +356,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     double startX,startY,pos1,pos2;
     @Override
     public boolean onDown(MotionEvent motionEvent) {
+
         int temp=this.insideBlueRect(motionEvent.getX(),motionEvent.getY());
         int temp2=this.insideRect(motionEvent.getX(),motionEvent.getY());
         if(temp!=-1) {
@@ -420,6 +422,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onLongPress(MotionEvent motionEvent) {
+        int temp1=this.insideBlueRect(motionEvent.getX(),motionEvent.getY());
+        int temp2=this.insideRect(motionEvent.getX(),motionEvent.getY());
+        if(temp1!=-1){
+
+            if(temp2!=-1){
+                this.rectList[temp2].buang();
+            }
+            this.daftarKotakYangDibuat.remove(temp1);
+            this.indeksAktif=-1;
+            
+            this.resetCanvas();
+            System.out.println(temp1+"remove");
+        }
+
 
     }
 
