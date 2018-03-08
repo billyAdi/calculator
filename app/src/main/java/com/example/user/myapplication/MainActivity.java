@@ -184,19 +184,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return null;
     }
 
-    public int insideRect(float x,float y){
+    public int insideRect(IsiKotak isi){
+        int posisiKotak=-1;
+        int bedaTengahX=Integer.MAX_VALUE,bedaTengahY=Integer.MAX_VALUE;
+
         for(int i = 0;i<rectList.length;i++) {
             Rect rectTemp = rectList[i].getRect();
-            if (rectTemp.left<=x && rectTemp.right>=x) {
-                if(rectTemp.top<=y&&rectTemp.bottom>=y){
-                    return i;
+            if ((rectTemp.left<=isi.getRect().left && rectTemp.right>=isi.getRect().left)||(rectTemp.left<=isi.getRect().right && rectTemp.right>=isi.getRect().right)) {
+                if((rectTemp.top<=isi.getRect().top && rectTemp.bottom>=isi.getRect().top) ||(rectTemp.top<=isi.getRect().bottom && rectTemp.bottom>=isi.getRect().bottom) ){
+                    int diffX = Math.abs(rectList[i].posisiTengahX()-isi.posisiTengahX());
+                    int diffY = Math.abs(rectList[i].posisiTengahY()-isi.posisiTengahY());
+                    if(diffX<bedaTengahX && diffY<bedaTengahY){
+                           posisiKotak=i;
+                           bedaTengahX=diffX;
+                           bedaTengahY=diffY;
+                    }
+                    else if(diffX>bedaTengahX && diffY>bedaTengahY){
+
+                    }
+                    else {
+                        double jarakYangDicek = Math.sqrt((diffX * diffX) + (diffY * diffY));
+                        double jarakTersimpan = Math.sqrt((bedaTengahX *bedaTengahX) + (bedaTengahY * bedaTengahY));
+                        if(jarakTersimpan>jarakYangDicek){
+                            posisiKotak=i;
+                            bedaTengahX=diffX;
+                            bedaTengahY=diffY;
+                        }
+                    }
                 }
             }
 
         }
 
-        return -1;
-    }
+        return posisiKotak;
 
     public int insideBlueRect(float x,float y){
         for(int i = 0;i<this.daftarKotakYangDibuat.size();i++) {
@@ -276,7 +296,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case MotionEvent.ACTION_UP:
 
                 if(this.indeksAktif!=-1){
-                    int pos = insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().left,this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().top);
+                    int pos = insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif));
                     if(pos!=-1){
 
                         yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
