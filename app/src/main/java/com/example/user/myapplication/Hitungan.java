@@ -1,5 +1,7 @@
 package com.example.user.myapplication;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 public class Hitungan{
@@ -83,6 +85,7 @@ public class Hitungan{
     }
 
     public static boolean isValid(ArrayList<String> str){
+        nextAngka=true;
         for(int i = 0;i<str.size();i++){
             if (valid(str.get(i))){
 
@@ -95,21 +98,26 @@ public class Hitungan{
     }
 
     public static boolean valid(String next){
-        if(next=="+"|| next=="-" || next == "/" || next == "*"){
+        Log.d("Angka",next+" "+nextAngka);
+        if(next.contains("+")|| next.contains("-") || next.contains("/") || next.contains("*")){
             if(nextAngka==true){
+                Log.d("AB",next);
                 return false;
             }
             else{
+                Log.d("AW",next);
                 nextAngka=true;
                 return true;
             }
         }
         else{
             if(nextAngka==true){
+                Log.d("WW",next);
                 nextAngka=false;
                 return true;
             }
             else{
+                Log.d("WB",next);
                 nextAngka=true;
                 return false;
             }
