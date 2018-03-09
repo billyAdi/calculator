@@ -275,7 +275,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
-
+    
+    public boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
     public void drawKotak(){
         if(this.flag==false){
             this.flag=true;
