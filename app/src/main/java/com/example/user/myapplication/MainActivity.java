@@ -149,14 +149,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         else if(view.getId()==this.buttonCalculate.getId()){
-            double hasil=Hitungan.hasilHitung(hitung);
-            if(hasil%1==0){
-                this.tv_hasil.setText((int)hasil+"");
+            if(Hitungan.isValid(hitung)) {
+                String hasil = Hitungan.hasilHitung(hitung);
+                Log.d("hasil hitung",hasil);
+                if(isDouble(hasil)) {
+                    if (Double.parseDouble(hasil) % 1 == 0) {
+                        this.tv_hasil.setText(Double.parseDouble(hasil) + "");
+                    } else {
+                        String str = String.format("%.4f", Double.parseDouble(hasil));
+                        this.tv_hasil.setText(str);
+                    }
+                }
+                else{
+                    this.tv_hasil.setText("Dibagi 0");
+                }
             }
             else{
-                String str=String.format("%.4f",hasil);
-                this.tv_hasil.setText(str);
+                this.tv_hasil.setText("Terjadi kesalahan input");
             }
+
+        
 
         }
         else if(view.getId()==this.buttonReset.getId()){
