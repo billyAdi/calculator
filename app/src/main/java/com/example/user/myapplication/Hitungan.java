@@ -102,6 +102,15 @@ public class Hitungan{
         }
     }
 
+    public static boolean isDouble(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public static boolean valid(String next){
         Log.d("Angka",next+" "+nextAngka);
         if(next.contains("+")|| next.contains("-") || next.contains("/") || next.contains("*")){
@@ -129,34 +138,3 @@ public class Hitungan{
         }
     }
 }
-/**boolean nextAngka=true;
-
-public boolean parentheses(String bacaan){
-    Stack simbol = new Stack();
-    for(int i = 0 ; i<bacaan.length();i++){
-      if(bacaan.charAt(i)=='('){
-        simbol.push(bacaan.charAt(i);
-        }
-        else if(bacaan.charAt(i)==')'){
-          if(simbol.isEmpty()){
-            return false;
-          }
-          else{
-            simbol.pop();
-          }
-      }
-    }
-    if(simbol.isEmpty()){
-    return true;
-    }
-    else{
-      return false;
-      }
-    
-    
-}
-         
-
-         
-         
-*/

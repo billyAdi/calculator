@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,13 +31,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected GestureDetector mGestureDetector;
     protected Bitmap mBitmap;
     protected Canvas mCanvas;
-    protected Paint paint1,paint2;
+    protected Paint paint1,paint2,paint3;
     protected KotakExtension[] rectList;
-    private ArrayList<IsiKotak> daftarKotakYangDibuat;
-    private int x,y,indeksAktif;
-    private IsiKotak[] yangAkanDihitung;
-    private ArrayList<String> hitung;
-    private boolean flag;
+    protected ArrayList<IsiKotak> daftarKotakYangDibuat;
+    protected int x,y,indeksAktif;
+    protected IsiKotak[] yangAkanDihitung;
+    protected ArrayList<String> hitung;
+    protected boolean flag;
+    protected double startX,startY,pos1,pos2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,8 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.paint2.setStyle(Paint.Style.FILL);
         this.paint2.setTextSize(40);
         this.paint2.setTextAlign(Paint.Align.CENTER);
-        this.x=25;
+        this.paint3=new Paint();
+        this.paint3.setStyle(Paint.Style.FILL);
+        this.paint3.setColor(Color.BLUE);
 
+        this.x=25;
         this.flag=false;
         this.hitung = new ArrayList<String>();
         this.indeksAktif=-1;
@@ -91,17 +95,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void resetCanvas(){
         this.mCanvas.drawColor(Color.WHITE);
-        this.paint1.setColor(Color.BLACK);
-        this.paint1.setStrokeWidth(5);
-        this.paint1.setStyle(Paint.Style.STROKE);
         this.drawKotak();
-        this.paint1.setStyle(Paint.Style.FILL);
-        this.paint1.setColor(Color.BLUE);
         if(this.daftarKotakYangDibuat.size()>0){
             for (int i=0;i<this.daftarKotakYangDibuat.size();i++){
 
                 if(i!=this.indeksAktif){
-                    this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(i).getRect(),this.paint1);
+                    this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(i).getRect(),this.paint3);
                     this.mCanvas.drawText(this.daftarKotakYangDibuat.get(i).getText(),this.daftarKotakYangDibuat.get(i).posisiTengahX(),this.daftarKotakYangDibuat.get(i).posisiTengahY(),this.paint2);
                 }
             }
@@ -112,10 +111,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if(view.getId()==this.button1.getId()||view.getId()==this.button2.getId()){
-            for (int i=0;i<8;i++){
-                Rect temp=this.rectList[i].getRect();
-                System.out.println(temp.left+" "+temp.right+" "+temp.top+" "+temp.bottom);
-            }
 
             String teks="";
             if(view.getId()==this.button1.getId()){
@@ -127,12 +122,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if(!teks.equals("")){
 
-                this.paint1.setColor(Color.BLUE);
-                this.paint1.setStyle(Paint.Style.FILL);
+
                 int size = (5*iv.getWidth()/(6*6));
                 IsiKotak isi = new IsiKotak(new Rect(this.x,this.y ,this.x+size ,this.y+size ),teks,size,40);
                 daftarKotakYangDibuat.add(isi);
-                this.mCanvas.drawRect(isi.getRect(), this.paint1);
+                this.mCanvas.drawRect(isi.getRect(), this.paint3);
                 this.mCanvas.drawText(isi.getText(), isi.posisiTengahX(), isi.posisiTengahY()  ,this.paint2);
                 if(this.daftarKotakYangDibuat.size()%5!=0){
                     this.x=this.x+25+size;
@@ -151,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else if(view.getId()==this.buttonCalculate.getId()){
             for (int i=0;i<this.rectList.length;i++){
                 if(this.rectList[i].cekIsi()){
-                    this.hitung.add(this.rectList[i].isi.getText());
+                    this.hitung.add(this.rectList[i].getIsi().getText());
                 }
             }
             for(int i=0;i<this.hitung.size();i++){
@@ -160,9 +154,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(Hitungan.isValid(hitung)) {
                 String hasil = Hitungan.hasilHitung(hitung);
                 Log.d("hasil hitung",hasil);
-                if(isDouble(hasil)) {
+                if(Hitungan.isDouble(hasil)) {
                     if (Double.parseDouble(hasil) % 1 == 0) {
-                        this.tv_hasil.setText(Double.parseDouble(hasil) + "");
+                        this.tv_hasil.setText((int)Double.parseDouble(hasil) + "");
                     } else {
                         String str = String.format("%.4f", Double.parseDouble(hasil));
                         this.tv_hasil.setText(str);
@@ -192,21 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public IsiKotak isIsi(float x,float y){
-        int i = 0;
-        while(i!=daftarKotakYangDibuat.size()) {
-            Rect rectTemp = daftarKotakYangDibuat.get(i).getRect();
-            if (rectTemp.left<=x && rectTemp.right>=x) {
-                if(rectTemp.top<=y&&rectTemp.bottom>=y){
-                    return daftarKotakYangDibuat.get(i);
-                }
-            }
-            i++;
 
-        }
-
-        return null;
-    }
 
     public int insideRect(IsiKotak isi){
         int posisiKotak=-1;
@@ -283,20 +263,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.indeksAktif=-1;
             this.resetCanvas();
 
-
-
         }
     }
     
-    public boolean isDouble(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-    
+
     public void drawKotak(){
         if(this.flag==false){
             this.flag=true;
@@ -304,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          int x = 25;
          int y = 25;
          int size = iv.getWidth()/6;
-            this.y=75+2*size;
+         this.y=75+2*size;
          for(int i  = 0;i<8;i++){
             Rect rectData = new Rect(x,y,x+size,y+size);
             rectList[i]=new KotakExtension(rectData);
@@ -350,7 +320,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(pos!=-1){
 
                         yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
-                        //Log.d("aw",yangAkanDihitung[pos].getText());
                         if(this.rectList[pos].cekIsi()){
                             this.resetCanvas();
                             this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().left=(int)startX;
@@ -365,20 +334,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             moveKotakTengah(pos);
 
                         }
-                       // hitung = new ArrayList<String>();
-                      //  for(int i = 0;i<8;i++){
-                       //     if(yangAkanDihitung[i]!=null){
-                      //          Log.d("aw"+i," "+yangAkanDihitung[i].getText());
-                       //         hitung.add(yangAkanDihitung[i].getText());
-                       //     }
-                      //  }
-
-                       // if(hitung.size()!=0){
-                       //     Log.d("aw"," "+Hitungan.hasilHitung(hitung));
-                       // }
 
                     }
-                    System.out.println("ada di slot "+pos);
+
                 }
 
                 this.indeksAktif=-1;
@@ -389,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return this.mGestureDetector.onTouchEvent(motionEvent);
 
     }
-    double startX,startY,pos1,pos2;
+
     @Override
     public boolean onDown(MotionEvent motionEvent) {
 
@@ -428,7 +386,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        //System.out.println("scrollllllllll");
 
 
         if(this.indeksAktif!=-1) {
@@ -441,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().right = this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().left + this.daftarKotakYangDibuat.get(this.indeksAktif).size;
 
 
-            this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(this.indeksAktif).getRect(), this.paint1);
+            this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(this.indeksAktif).getRect(), this.paint3);
             this.mCanvas.drawText(this.daftarKotakYangDibuat.get(this.indeksAktif).getText(), this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahX(), this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahY(), this.paint2);
             this.iv.invalidate();
 
@@ -469,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.indeksAktif=-1;
             
             this.resetCanvas();
-            System.out.println(temp1+"remove");
+
         }
 
 

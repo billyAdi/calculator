@@ -7,9 +7,9 @@ import android.graphics.Rect;
  */
 
 public class KotakExtension{
-    boolean terisi;
-    Rect rect;
-    IsiKotak isi;
+    private boolean terisi;
+    private Rect rect;
+    private IsiKotak isi;
     public KotakExtension(Rect rect){
         this.rect=rect;
         this.terisi=false;
@@ -33,11 +33,15 @@ public class KotakExtension{
         return this.rect;
     }
     
-        public int posisiTengahX(){
+    public int posisiTengahX(){
         return (this.rect.right+this.rect.left)/2;
     }
 
     public int posisiTengahY(){
         return (this.rect.top+this.rect.bottom)/2;
+    }
+
+    public IsiKotak getIsi(){
+        return this.isi;
     }
 }
