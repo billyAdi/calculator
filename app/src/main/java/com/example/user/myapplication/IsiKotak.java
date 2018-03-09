@@ -21,11 +21,6 @@ public class IsiKotak extends KotakExtension{
         return this.text;
     }
 
-    public void gerakinKotak(int x, int y){
-        this.rect.left=x-size;
-        this.rect.right=x+size;
-        this.rect.top=y-size;
-        this.rect.bottom=y+size;
-    }
+
 
 }

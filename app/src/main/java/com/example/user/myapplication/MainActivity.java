@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.x=25;
 
         this.flag=false;
-
+        this.hitung = new ArrayList<String>();
         this.indeksAktif=-1;
         this.iv.post(new ThreadActivity(this));
 
@@ -149,6 +149,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         else if(view.getId()==this.buttonCalculate.getId()){
+            for (int i=0;i<this.rectList.length;i++){
+                if(this.rectList[i].cekIsi()){
+                    this.hitung.add(this.rectList[i].isi.getText());
+                }
+            }
+            for(int i=0;i<this.hitung.size();i++){
+                System.out.println(this.hitung.get(i)+" isi hitungan");
+            }
             if(Hitungan.isValid(hitung)) {
                 String hasil = Hitungan.hasilHitung(hitung);
                 Log.d("hasil hitung",hasil);
@@ -161,13 +169,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 else{
-                    this.tv_hasil.setText("Dibagi 0");
+
+                    Toast toast=Toast.makeText(this,"Dibagi 0",Toast.LENGTH_LONG);
+                    toast.show();
                 }
             }
             else{
-                this.tv_hasil.setText("Terjadi kesalahan input");
-            }
 
+                Toast toast=Toast.makeText(this,"Terjadi kesalahan input",Toast.LENGTH_LONG);
+                toast.show();
+            }
+            this.hitung=new ArrayList<String>();
         
 
         }
@@ -261,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void moveKotakTengah(int posisi){
         if(this.indeksAktif!=-1){
             Rect tempatKotak= rectList[posisi].getRect();
-            this.rectList[posisi].isi();
+            this.rectList[posisi].isi(this.daftarKotakYangDibuat.get(this.indeksAktif));
             int temp3=this.daftarKotakYangDibuat.get(this.indeksAktif).size;
             int diff = (rectList[posisi].getRect().right-rectList[posisi].getRect().left-temp3)/2;
 
@@ -353,17 +365,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             moveKotakTengah(pos);
 
                         }
-                        hitung = new ArrayList<String>();
-                        for(int i = 0;i<8;i++){
-                            if(yangAkanDihitung[i]!=null){
-                                Log.d("aw"+i," "+yangAkanDihitung[i].getText());
-                                hitung.add(yangAkanDihitung[i].getText());
-                            }
-                        }
+                       // hitung = new ArrayList<String>();
+                      //  for(int i = 0;i<8;i++){
+                       //     if(yangAkanDihitung[i]!=null){
+                      //          Log.d("aw"+i," "+yangAkanDihitung[i].getText());
+                       //         hitung.add(yangAkanDihitung[i].getText());
+                       //     }
+                      //  }
 
-                        if(hitung.size()!=0){
-                            Log.d("aw"," "+Hitungan.hasilHitung(hitung));
-                        }
+                       // if(hitung.size()!=0){
+                       //     Log.d("aw"," "+Hitungan.hasilHitung(hitung));
+                       // }
 
                     }
                     System.out.println("ada di slot "+pos);

@@ -9,17 +9,20 @@ import android.graphics.Rect;
 public class KotakExtension{
     boolean terisi;
     Rect rect;
+    IsiKotak isi;
     public KotakExtension(Rect rect){
         this.rect=rect;
         this.terisi=false;
     }
 
-    public void isi(){
+    public void isi(IsiKotak isi){
         this.terisi=true;
+        this.isi=isi;
     }
 
     public void buang(){
         this.terisi=false;
+        this.isi=null;
     }
 
     public boolean cekIsi(){
