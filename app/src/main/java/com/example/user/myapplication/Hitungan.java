@@ -94,7 +94,12 @@ public class Hitungan{
                 return false;
             }
         }
-        return true;
+        if(nextAngka){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     public static boolean valid(String next){
