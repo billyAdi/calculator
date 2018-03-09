@@ -59,8 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        this.rectList=new KotakExtension[8];
-        this.yangAkanDihitung=new IsiKotak[8];
+        this.rectList=new KotakExtension[getResources().getInteger(R.integer.banyakKotak)];
+        this.yangAkanDihitung=new IsiKotak[getResources().getInteger(R.integer.banyakKotak)];
 
         this.mGestureDetector=new GestureDetector(this,this);
         this.spinner.setAdapter(adapter);
@@ -266,19 +266,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     
-
-    public void drawKotak(){
+   public void drawKotak(){
         if(this.flag==false){
             this.flag=true;
-
          int x = 25;
          int y = 25;
-         int size = iv.getWidth()/6;
-         this.y=75+2*size;
-         for(int i  = 0;i<8;i++){
+
+         int banyakKotak = 1;
+
+         double sizeX = iv.getWidth()/(getResources().getInteger(R.integer.ukuranKotak)+1);
+         double sizeY = iv.getHeight()/(getResources().getInteger(R.integer.ukuranKotak)+1);
+
+         int size = (int)(Math.min(sizeX,sizeY));
+         int sizeMax = (int)(Math.max(sizeX,sizeY));
+         if(sizeX>sizeY){
+             banyakKotak=(iv.getWidth()/sizeMax);
+         }
+         else{
+             banyakKotak=(iv.getHeight()/sizeMax);
+         }
+         if(banyakKotak%2!=0){
+             banyakKotak--;
+         }
+
+         for(int i  = 0;i<getResources().getInteger(R.integer.banyakKotak);i++){
             Rect rectData = new Rect(x,y,x+size,y+size);
             rectList[i]=new KotakExtension(rectData);
-            if(i!=3){
+            if((i+1)%banyakKotak!=0){
                 x+=25+size;
             }
             else{
@@ -288,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
          }
         drawKeView();
+    
     }
 
     public void drawKeView(){
