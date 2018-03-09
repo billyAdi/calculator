@@ -3,6 +3,8 @@ package com.example.user.myapplication;
 import java.util.ArrayList;
 
 public class Hitungan{
+    static boolean nextAngka=true;
+    static boolean divZero=false;
     public Hitungan(){
 
     }
@@ -19,7 +21,12 @@ public class Hitungan{
                 result = angkaAwal-angkaNext;
             }
             else if(operator.equals("/")){
-                result = angkaAwal/angkaNext;
+                if(angkaNext==0){
+                    divZero=true;
+                }
+                else {
+                    result = angkaAwal / angkaNext;
+                }
             }
             else if(operator.equals("*")){
                 result = angkaAwal*angkaNext;
@@ -37,13 +44,25 @@ public class Hitungan{
 
     }
 
-    public static double hasilHitung(ArrayList<String> str) {
+    public static String hasilHitung(ArrayList<String> str){
+        double temp = cekhitungHasil(str);
+        if(!divZero){
+            return  temp+"";
+        }
+        else{
+            return "Dibagi 0";
+        }
+
+    }
+
+    public static double cekhitungHasil(ArrayList<String> str) {
+        divZero=false;
         int i = 0;
         double angkaTersimpan = 0;
         double angkaYangAkanDihitung = Integer.MIN_VALUE;
         String operator = "";
         boolean adaIsi=false;
-        for(int j = 0; j <str.size();j++){
+        for(int j = 0; j <str.size()&& !divZero;j++){
             System.out.println(str.get(j));
             if(!(str.get(j).equals("+")  || str.get(j).equals("-")  || str.get(j).equals("/") || str.get(j).equals("*"))){
                 if(!adaIsi){
@@ -53,7 +72,7 @@ public class Hitungan{
                 else{
                     angkaYangAkanDihitung=Integer.parseInt(str.get(j));
                     angkaTersimpan=hitung(angkaTersimpan,operator,angkaYangAkanDihitung);}
-                angkaYangAkanDihitung=Integer.MIN_VALUE;
+                    angkaYangAkanDihitung=Integer.MIN_VALUE;
             }
             else{
                 operator = str.get(j);
@@ -61,6 +80,40 @@ public class Hitungan{
             }
         }
         return angkaTersimpan;
+    }
+
+    public static boolean isValid(ArrayList<String> str){
+        for(int i = 0;i<str.size();i++){
+            if (valid(str.get(i))){
+
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean valid(String next){
+        if(next=="+"|| next=="-" || next == "/" || next == "*"){
+            if(nextAngka==true){
+                return false;
+            }
+            else{
+                nextAngka=true;
+                return true;
+            }
+        }
+        else{
+            if(nextAngka==true){
+                nextAngka=false;
+                return true;
+            }
+            else{
+                nextAngka=true;
+                return false;
+            }
+        }
     }
 }
 /**boolean nextAngka=true;
@@ -90,23 +143,7 @@ public boolean parentheses(String bacaan){
     
 }
          
-        public boolean valid(char next){
-          if(next=='+'|| next=='-' || next == '/' || next == '*'){
-                if(nextAngka==true){
-                    return false;   
-                }
-              else{
-                nextAngka=true;
-                  return true;
-              }
-          }
-            else{
-                if(nextAngka==true){
-                    nextAngka=false;
-                    return true;
-                }
-                }
-        }
+
          
          
 */
