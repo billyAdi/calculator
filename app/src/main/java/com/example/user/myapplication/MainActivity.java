@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().top=(int)startY;
                             this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().right=this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().left+this.daftarKotakYangDibuat.get(this.indeksAktif).size;
                             this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().bottom=this.daftarKotakYangDibuat.get(this.indeksAktif).getRect().top+this.daftarKotakYangDibuat.get(this.indeksAktif).size;
-                            this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(this.indeksAktif).getRect(), this.paint1);
+                            this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(this.indeksAktif).getRect(), this.paint3);
                             this.mCanvas.drawText(this.daftarKotakYangDibuat.get(this.indeksAktif).getText(), this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahX(), this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahY(), this.paint2);
                             this.iv.invalidate();
                         }
