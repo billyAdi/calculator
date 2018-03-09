@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.paint2.setTextSize(40);
         this.paint2.setTextAlign(Paint.Align.CENTER);
         this.x=25;
-        this.y=400;
+
         this.flag=false;
 
         this.indeksAktif=-1;
@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     this.x=25;
                     this.y=this.y+25+size;
                 }
+                this.iv.invalidate();
             }
             else{
                 Toast toast=Toast.makeText(this,"Angka belum diisi",Toast.LENGTH_LONG);
@@ -266,9 +267,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void drawKotak(){
         if(this.flag==false){
             this.flag=true;
+
          int x = 25;
          int y = 25;
          int size = iv.getWidth()/6;
+            this.y=75+2*size;
          for(int i  = 0;i<8;i++){
             Rect rectData = new Rect(x,y,x+size,y+size);
             rectList[i]=new KotakExtension(rectData);
