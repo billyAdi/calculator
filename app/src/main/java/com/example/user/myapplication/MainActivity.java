@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
     
-   public void drawKotak(){
+    public void drawKotak(){
         if(this.flag==false){
             this.flag=true;
          int x = 25;
@@ -280,10 +280,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          int size = (int)(Math.min(sizeX,sizeY));
          int sizeMax = (int)(Math.max(sizeX,sizeY));
          if(sizeX>sizeY){
-             banyakKotak=(iv.getWidth()/sizeMax);
+             banyakKotak=(iv.getWidth()/(sizeMax+25));
          }
          else{
-             banyakKotak=(iv.getHeight()/sizeMax);
+             banyakKotak=(iv.getHeight()/(sizeMax+25));
          }
          if(banyakKotak%2!=0){
              banyakKotak--;
@@ -302,7 +302,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
          }
         drawKeView();
-    
     }
 
     public void drawKeView(){
