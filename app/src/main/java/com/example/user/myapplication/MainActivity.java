@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected Paint paint1,paint2,paint3;
     protected KotakExtension[] rectList;
     protected ArrayList<IsiKotak> daftarKotakYangDibuat;
-    protected int x,y,indeksAktif,yMin;
+    protected int x,y,indeksAktif,yMin,sizeSlot;
     protected IsiKotak[] yangAkanDihitung;
     protected ArrayList<String> hitung;
     protected boolean flag;
@@ -118,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             else if(view.getId()==this.button2.getId()){
                 teks=this.et.getText()+"";
+                this.et.setText("");
             }
 
             if(this.daftarKotakYangDibuat.size()>=15){
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             else if(!teks.equals("")){
 
 
-                int size = (5*iv.getWidth()/(6*6));
+                int size = (5*this.sizeSlot/6);
                 IsiKotak isi = new IsiKotak(new Rect(this.x,this.y ,this.x+size ,this.y+size ),teks,size,40);
                 daftarKotakYangDibuat.add(isi);
                 this.mCanvas.drawRect(isi.getRect(), this.paint3);
@@ -300,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          if(banyakKotak%2!=0){
              banyakKotak--;
          }
-
+         this.sizeSlot=size;
          this.y=25+banyakKotak*size;
          this.yMin=this.y;
 
