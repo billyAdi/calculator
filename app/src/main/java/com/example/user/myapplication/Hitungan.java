@@ -3,6 +3,7 @@ package com.example.user.myapplication;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class Hitungan{
     static boolean nextAngka=true;
@@ -47,14 +48,20 @@ public class Hitungan{
     }
 
     public static String hasilHitung(ArrayList<String> str){
-        double temp = cekhitungHasil(str);
-        if(!divZero){
+       // double temp = cekhitungHasil(str);
+        String s=new String();
+        for (int i=0;i<str.size();i++){
+            s+=str.get(i);
+        }
+        double temp=evalInfix(s);
+        return  temp+"";
+       /** if(!divZero){
             return  temp+"";
         }
         else{
             return "Dibagi 0";
         }
-
+*/
     }
 
     public static double cekhitungHasil(ArrayList<String> str) {
@@ -86,20 +93,48 @@ public class Hitungan{
 
     public static boolean isValid(ArrayList<String> str){
         nextAngka=true;
+        String s=new String();
+        for (int i=0;i<str.size();i++){
+            s+=str.get(i);
+        }
+        boolean isBalance=isBalance(s);
+
         for(int i = 0;i<str.size();i++){
-            if (valid(str.get(i))){
+            if(str.get(i).equals("(")||str.get(i).equals(")")){
+                continue;
+            }
+           else if (valid(str.get(i))){
 
             }
             else{
                 return false;
             }
         }
+
         if(nextAngka){
             return false;
         }
         else{
-            return true;
+            if(isBalance){return true;}
+            else{return false;}
         }
+    }
+
+    public static boolean isBalance(String str){
+        Stack<Character> stack=new Stack<Character>();
+        for (int i=0;i<str.length();i++){
+            char c=str.charAt(i);
+            if(c=='('){
+                stack.push(c);
+            }
+            else if(c==')'){
+                if(stack.isEmpty() || stack.pop() != '(') {
+                    return false;
+                }
+            }
+
+        }
+        return stack.empty();
     }
 
     public static boolean isDouble(String str) {
@@ -136,5 +171,101 @@ public class Hitungan{
                 return false;
             }
         }
+    }
+
+
+
+    private static final String operators = "-+/*";
+    private static final String operands = "0123456789";
+
+    public static double evalInfix(String infix) {
+        return evaluatePostfix(convert2Postfix(infix));
+    }
+
+    public static String convert2Postfix(String infixExpr) {
+        char[] chars = infixExpr.toCharArray();
+        Stack<Character> stack = new Stack<Character>();
+        StringBuilder out = new StringBuilder(infixExpr.length());
+
+        for (char c : chars) {
+            if (isOperator(c)) {
+                while (!stack.isEmpty() && stack.peek() != '(') {
+                    if (operatorGreaterOrEqual(stack.peek(), c)) {
+                        out.append(stack.pop());
+                    } else {
+                        break;
+                    }
+                }
+                stack.push(c);
+            } else if (c == '(') {
+                stack.push(c);
+            } else if (c == ')') {
+                while (!stack.isEmpty() && stack.peek() != '(') {
+                    out.append(stack.pop());
+                }
+                if (!stack.isEmpty()) {
+                    stack.pop();
+                }
+            } else if (isOperand(c)) {
+                out.append(c);
+            }
+        }
+        while (!stack.empty()) {
+            out.append(stack.pop());
+        }
+        return out.toString();
+    }
+
+    public static double evaluatePostfix(String postfixExpr) {
+        char[] chars = postfixExpr.toCharArray();
+        Stack<Double> stack = new Stack<Double>();
+        for (char c : chars) {
+            if (isOperand(c)) {
+                stack.push((double)(c - '0'));
+            } else if (isOperator(c)) {
+                double op1 = stack.pop();
+                double op2 = stack.pop();
+                double result;
+                switch (c) {
+                    case '*':
+                        result = op1 * op2;
+                        stack.push(result);
+                        break;
+                    case '/':
+                        result = op2 / op1;
+                        stack.push(result);
+                        break;
+                    case '+':
+                        result = op1 + op2;
+                        stack.push(result);
+                        break;
+                    case '-':
+                        result = op2 - op1;
+                        stack.push(result);
+                        break;
+                }
+            }
+        }
+        return stack.pop();
+    }
+    private static int getPrecedence(char operator) {
+        int ret = 0;
+        if (operator == '-' || operator == '+') {
+            ret = 1;
+        } else if (operator == '*' || operator == '/') {
+            ret = 2;
+        }
+        return ret;
+    }
+    private static boolean operatorGreaterOrEqual(char op1, char op2) {
+        return getPrecedence(op1) >= getPrecedence(op2);
+    }
+
+    private static boolean isOperator(char val) {
+        return operators.indexOf(val) >= 0;
+    }
+
+    private static boolean isOperand(char val) {
+        return operands.indexOf(val) >= 0;
     }
 }
