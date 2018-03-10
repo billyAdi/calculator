@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected Paint paint1,paint2,paint3;
     protected KotakExtension[] rectList;
     protected ArrayList<IsiKotak> daftarKotakYangDibuat;
-    protected int x,y,indeksAktif;
+    protected int x,y,indeksAktif,yMin;
     protected IsiKotak[] yangAkanDihitung;
     protected ArrayList<String> hitung;
     protected boolean flag;
@@ -120,7 +120,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 teks=this.et.getText()+"";
             }
 
-            if(!teks.equals("")){
+            if(this.daftarKotakYangDibuat.size()>=15){
+                Toast toast=Toast.makeText(this,"Jumlah kotak maksimal 15",Toast.LENGTH_LONG);
+                toast.show();
+
+            }
+            else if(!teks.equals("")){
 
 
                 int size = (5*iv.getWidth()/(6*6));
@@ -128,12 +133,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 daftarKotakYangDibuat.add(isi);
                 this.mCanvas.drawRect(isi.getRect(), this.paint3);
                 this.mCanvas.drawText(isi.getText(), isi.posisiTengahX(), isi.posisiTengahY()  ,this.paint2);
-                if(this.daftarKotakYangDibuat.size()%5!=0){
-                    this.x=this.x+25+size;
+
+                 if(this.x==25+4*(25+size)){
+                     if(this.y==this.yMin+2*(size+25)){
+                         this.y=this.yMin;
+                     }
+                    else {
+
+                         this.y = this.y + 25 + size;
+                     }
+                     this.x = 25;
                 }
                 else{
-                    this.x=25;
-                    this.y=this.y+25+size;
+                    this.x=this.x+25+size;
                 }
                 this.iv.invalidate();
             }
@@ -288,6 +300,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          if(banyakKotak%2!=0){
              banyakKotak--;
          }
+
+         this.y=25+banyakKotak*size;
+         this.yMin=this.y;
 
          for(int i  = 0;i<getResources().getInteger(R.integer.banyakKotak);i++){
             Rect rectData = new Rect(x,y,x+size,y+size);
