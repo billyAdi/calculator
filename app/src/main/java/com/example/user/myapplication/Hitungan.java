@@ -48,20 +48,23 @@ public class Hitungan{
     }
 
     public static String hasilHitung(ArrayList<String> str){
-       // double temp = cekhitungHasil(str);
+        // double temp = cekhitungHasil(str);
+
         String s=new String();
         for (int i=0;i<str.size();i++){
+            //Log.d("Nopest nope", str.get(i));
             s+=str.get(i);
         }
+
         double temp=evalInfix(s);
         return  temp+"";
-       /** if(!divZero){
-            return  temp+"";
-        }
-        else{
-            return "Dibagi 0";
-        }
-*/
+        /** if(!divZero){
+         return  temp+"";
+         }
+         else{
+         return "Dibagi 0";
+         }
+         */
     }
 
     public static double cekhitungHasil(ArrayList<String> str) {
@@ -81,7 +84,7 @@ public class Hitungan{
                 else{
                     angkaYangAkanDihitung=Integer.parseInt(str.get(j));
                     angkaTersimpan=hitung(angkaTersimpan,operator,angkaYangAkanDihitung);}
-                    angkaYangAkanDihitung=Integer.MIN_VALUE;
+                angkaYangAkanDihitung=Integer.MIN_VALUE;
             }
             else{
                 operator = str.get(j);
@@ -103,7 +106,7 @@ public class Hitungan{
             if(str.get(i).equals("(")||str.get(i).equals(")")){
                 continue;
             }
-           else if (valid(str.get(i))){
+            else if (valid(str.get(i))){
 
             }
             else{
@@ -176,7 +179,7 @@ public class Hitungan{
 
 
     private static final String operators = "-+/*";
-    private static final String operands = "0123456789";
+    private static final String operands = "0123456789|";
 
     public static double evalInfix(String infix) {
         return evaluatePostfix(convert2Postfix(infix));
@@ -188,10 +191,14 @@ public class Hitungan{
         StringBuilder out = new StringBuilder(infixExpr.length());
 
         for (char c : chars) {
+
             if (isOperator(c)) {
+
+                out.append("|");
                 while (!stack.isEmpty() && stack.peek() != '(') {
                     if (operatorGreaterOrEqual(stack.peek(), c)) {
                         out.append(stack.pop());
+
                     } else {
                         break;
                     }
@@ -208,21 +215,43 @@ public class Hitungan{
                 }
             } else if (isOperand(c)) {
                 out.append(c);
+
             }
         }
         while (!stack.empty()) {
             out.append(stack.pop());
+
         }
         return out.toString();
     }
 
     public static double evaluatePostfix(String postfixExpr) {
+        Log.d("Nopest Nope", "evaluatePostfix: "+postfixExpr);
         char[] chars = postfixExpr.toCharArray();
+        String res = "";
         Stack<Double> stack = new Stack<Double>();
         for (char c : chars) {
             if (isOperand(c)) {
-                stack.push((double)(c - '0'));
+                if(c!='|'){
+                    res=res+c;
+                }
+                else{
+                    //stack.push((double)(c - '0'));
+
+                    stack.push(Double.parseDouble(res));
+                    res="";
+                }
+
+                Log.d("Nopest Nope", "*****: "+res);
+
+
             } else if (isOperator(c)) {
+                //stack.push(Double.parseDouble(res));
+
+                if(res!=""){
+                    stack.push(Double.parseDouble(res));
+                    res="";
+                }
                 double op1 = stack.pop();
                 double op2 = stack.pop();
                 double result;
@@ -230,18 +259,24 @@ public class Hitungan{
                     case '*':
                         result = op1 * op2;
                         stack.push(result);
+
+
                         break;
+
                     case '/':
                         result = op2 / op1;
                         stack.push(result);
+
                         break;
                     case '+':
                         result = op1 + op2;
                         stack.push(result);
+
                         break;
                     case '-':
                         result = op2 - op1;
                         stack.push(result);
+
                         break;
                 }
             }
