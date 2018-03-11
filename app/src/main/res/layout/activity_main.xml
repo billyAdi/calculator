@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"
@@ -59,28 +59,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="add"
-
+                android:layout_weight="1"
                 />
             <Button
                 android:id="@+id/btn_add2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="add"
-
+                android:layout_weight="1"
                 />
             <Button
                 android:id="@+id/btn_reset"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="reset"
-
+                android:layout_weight="1"
                 />
             <Button
                 android:id="@+id/btn_calculate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="="
-
+                android:layout_weight="1"
                 />
         </LinearLayout>
 
