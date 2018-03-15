@@ -13,9 +13,9 @@ public class Hitungan{
     }
 
     public static double hitung(double angkaAwal, String operator, double angkaNext){
-        System.out.println("masuk itungan");
+        //System.out.println("masuk itungan");
         double result = 0;
-        System.out.println(angkaAwal+"    aa"+angkaNext);
+       // System.out.println(angkaAwal+"    aa"+angkaNext);
         if(angkaNext!=Integer.MIN_VALUE){
             if(operator.equals("+")){
                 result = angkaAwal+angkaNext;
@@ -41,7 +41,7 @@ public class Hitungan{
         else{
             result=angkaAwal;
         }
-        System.out.println(result+"result");
+       // System.out.println(result+"result");
         return result;
 
 
@@ -75,7 +75,7 @@ public class Hitungan{
         String operator = "";
         boolean adaIsi=false;
         for(int j = 0; j <str.size()&& !divZero;j++){
-            System.out.println(str.get(j));
+          //  System.out.println(str.get(j));
             if(!(str.get(j).equals("+")  || str.get(j).equals("-")  || str.get(j).equals("/") || str.get(j).equals("*"))){
                 if(!adaIsi){
                     angkaTersimpan=Integer.parseInt(str.get(j));

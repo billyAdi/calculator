@@ -10,6 +10,7 @@ public class KotakExtension{
     private boolean terisi;
     private Rect rect;
     private IsiKotak isi;
+
     public KotakExtension(Rect rect){
         this.rect=rect;
         this.terisi=false;

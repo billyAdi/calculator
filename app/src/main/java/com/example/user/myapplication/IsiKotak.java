@@ -7,14 +7,13 @@ import android.graphics.Rect;
  */
 
 public class IsiKotak {
-    String text;
-    int size,ukuranText;
-    Rect rect;
-    public IsiKotak(Rect rect,String text,int size,int ukuran) {
+    private String text;
+    private int size;
+    private Rect rect;
+    public IsiKotak(Rect rect,String text,int size) {
         this.rect=rect;
         this.text=text;
         this.size=size;
-        this.ukuranText=ukuran;
     }
 
     public String getText(){
@@ -33,4 +32,15 @@ public class IsiKotak {
         return (this.rect.top+this.rect.bottom)/2;
     }
 
+    public int getSize() {
+        return this.size;
+    }
+
+    public void geser(int x,int y){
+        this.getRect().left=x;
+        this.getRect().right=x+this.size;
+        this.getRect().top=y;
+        this.getRect().bottom=y+this.size;
+
+    }
 }

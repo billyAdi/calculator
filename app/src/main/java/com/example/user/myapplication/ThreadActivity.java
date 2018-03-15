@@ -14,10 +14,10 @@ public class ThreadActivity implements  Runnable{
     }
     @Override
     public void run() {
-        main.mBitmap= Bitmap.createBitmap(main.iv.getWidth(),main.iv.getHeight(),Bitmap.Config.ARGB_8888);
-        main.iv.setImageBitmap(main.mBitmap);
-        main.mCanvas=new Canvas(main.mBitmap);
-        main.drawKotak();
-        main.iv.invalidate();
+        this.main.mBitmap= Bitmap.createBitmap(main.iv.getWidth(),main.iv.getHeight(),Bitmap.Config.ARGB_8888);
+        this.main.iv.setImageBitmap(main.mBitmap);
+        this.main.mCanvas=new Canvas(main.mBitmap);
+        this.main.initializeCanvas();
+        this.main.iv.invalidate();
     }
 }
