@@ -131,9 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void resetCanvas(){
         this.mCanvas.drawColor(Color.WHITE);
         this.drawSlot();
-        if(this.daftarKotakYangDibuat.size()>0){
-            this.drawBlueRect();
-        }
+        this.drawBlueRect();
         this.iv.invalidate();
     }
 
@@ -144,15 +142,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void drawBlueRect(){
-        for (int i=0;i<this.daftarKotakYangDibuat.size();i++){
-            if(i!=this.indeksAktif){
-                int temp=(int)(this.paint2.descent() + this.paint2.ascent() )/ 2;
-                this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(i).getRect(),this.paint3);
-                this.mCanvas.drawText(this.daftarKotakYangDibuat.get(i).getText(),this.daftarKotakYangDibuat.get(i).posisiTengahX(),this.daftarKotakYangDibuat.get(i).posisiTengahY()-temp,this.paint2);
+
+        if(this.daftarKotakYangDibuat.size()>0){
+            for (int i=0;i<this.daftarKotakYangDibuat.size();i++){
+                    int temp=(int)(this.paint2.descent() + this.paint2.ascent() )/ 2;
+                    this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(i).getRect(),this.paint3);
+                    this.mCanvas.drawText(this.daftarKotakYangDibuat.get(i).getText(),this.daftarKotakYangDibuat.get(i).posisiTengahX(),this.daftarKotakYangDibuat.get(i).posisiTengahY()-temp,this.paint2);
             }
         }
-    }
 
+
+    }
 
     public int insideRect(IsiKotak isi){
         int posisiKotak=-1;
@@ -198,7 +198,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }
-
         return -1;
     }
 
@@ -212,11 +211,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }
-
         return -1;
     }
 
-    public void moveKotakTengah(int posisi){
+    public void moveKeTengah(int posisi){
         if(this.indeksAktif!=-1){
             Rect tempatKotak= rectList[posisi].getRect();
             this.rectList[posisi].isi(this.daftarKotakYangDibuat.get(this.indeksAktif));
@@ -256,9 +254,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int size = (5*this.sizeSlot/6);
                 IsiKotak isi = new IsiKotak(new Rect(this.x,this.y ,this.x+size ,this.y+size ),teks,size);
                 daftarKotakYangDibuat.add(isi);
-                int temp=(int)(this.paint2.descent() + this.paint2.ascent() )/ 2;
-                this.mCanvas.drawRect(isi.getRect(), this.paint3);
-                this.mCanvas.drawText(isi.getText(), isi.posisiTengahX(), isi.posisiTengahY()-temp  ,this.paint2);
+
+                this.resetCanvas();
 
                  if(this.x==25+4*(25+size)){
                      if(this.y==this.yMin+2*(size+25)){
@@ -273,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 else{
                     this.x=this.x+25+size;
                 }
-                this.iv.invalidate();
+
             }
             else{
                 Toast toast=Toast.makeText(this,"Angka belum diisi",Toast.LENGTH_LONG);
@@ -312,7 +309,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 toast.show();
             }
             this.hitung=new ArrayList<String>();
-        
 
         }
         else if(view.getId()==this.buttonReset.getId()){
@@ -320,7 +316,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.et.setText("");
             this.spinner.setSelection(0);
         }
-
 
     }
 
@@ -338,9 +333,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onTouch(View view, MotionEvent motionEvent) {
 
         switch (motionEvent.getAction()) {
-
             case MotionEvent.ACTION_UP:
-
                 if(this.indeksAktif!=-1){
                     int pos = insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif));
                     if(pos!=-1){
@@ -348,25 +341,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
                         if(this.rectList[pos].cekIsi()){
                             this.resetCanvas();
-                            int temp=(int)(this.paint2.descent() + this.paint2.ascent() )/ 2;
                             this.daftarKotakYangDibuat.get(this.indeksAktif).geser((int)startX,(int)startY);
-                            this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(this.indeksAktif).getRect(), this.paint3);
-                            this.mCanvas.drawText(this.daftarKotakYangDibuat.get(this.indeksAktif).getText(), this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahX(), this.daftarKotakYangDibuat.get(this.indeksAktif).posisiTengahY()-temp, this.paint2);
-                            this.iv.invalidate();
+                            resetCanvas();
                         }
                         else{
-                            moveKotakTengah(pos);
+                            moveKeTengah(pos);
 
                         }
-
                     }
-
                 }
-
                 this.indeksAktif=-1;
                 break;
-
-
         }
         return this.mGestureDetector.onTouchEvent(motionEvent);
 
@@ -395,7 +380,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             }
-
             return true;
         }
 
@@ -410,11 +394,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int temp2=daftarKotakYangDibuat.get(indeksAktif).getRect().top;
 
                 daftarKotakYangDibuat.get(indeksAktif).geser(temp1+selisihX,temp2+selisihY);
-                int temp=(int)(paint2.descent() + paint2.ascent() )/ 2;
 
-                mCanvas.drawRect(daftarKotakYangDibuat.get(indeksAktif).getRect(), paint3);
-                mCanvas.drawText(daftarKotakYangDibuat.get(indeksAktif).getText(), daftarKotakYangDibuat.get(indeksAktif).posisiTengahX(), daftarKotakYangDibuat.get(indeksAktif).posisiTengahY()-temp, paint2);
-                iv.invalidate();
+                resetCanvas();
 
                 pos1 = motionEvent1.getX();
                 pos2 = motionEvent1.getY();
@@ -435,7 +416,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 daftarKotakYangDibuat.remove(temp1);
                 indeksAktif=-1;
-
                 resetCanvas();
             }
         }
