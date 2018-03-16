@@ -410,7 +410,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             }
                             else{
-                                yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
                                 this.resetCanvas();
                                 this.daftarKotakYangDibuat.get(this.indeksAktif).geser((int)startX,(int)startY);
                                 resetCanvas();
