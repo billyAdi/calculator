@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-   @Override
+    @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
 
         switch (motionEvent.getAction()) {
@@ -286,69 +286,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             int posisiKosong = this.presenter.indexKotakKosong();
                             Log.d("Nope", "posKosong: "+posisiKosong);
                             if( posisiKosong!=-1){
-                                boolean kedepan=true;
-                                int i = pos;
-                                int j = posisiKosong;
 
-                                int posisiUntukPindah=-1;
-                                if(pos>posisiKosong){
-                                    kedepan=false;
-
-                                    i = posisiKosong;
-                                    j = pos;
-                                }
-
-                                if(kedepan){
-                                    for(;j>=i;j--){
-                                        if(yangAkanDihitung[j]==null){
-
-                                            posisiUntukPindah=j;
-                                            System.out.println("Null "+posisiUntukPindah);
-                                        }
-                                        else{
-                                            System.out.println("NotNull "+posisiUntukPindah);
-                                            if(posisiUntukPindah!=-1){
-                                                System.out.println(yangAkanDihitung[j].getText()+" "+j);
-                                                int temp =indeksAktif;
-                                                indeksAktif=this.presenter.indexKotak(yangAkanDihitung[j]);
-                                                System.out.println(indeksAktif);
-                                                yangAkanDihitung[posisiUntukPindah]=yangAkanDihitung[j];
-                                                this.presenter.moveKeTengah(posisiUntukPindah);
-                                               // moveKeTengah(posisiUntukPindah);
-                                                yangAkanDihitung[j]=null;
-                                                posisiUntukPindah=j;
-                                                indeksAktif=temp;
-                                            }
-                                        }
-                                    }
-                                }
-                                else{
-                                    for(;i<=j;i++){
-                                        if(yangAkanDihitung[i]==null){
-                                            System.out.println("Null "+i);
-                                            posisiUntukPindah=i;
-                                        }
-                                        else{
-                                            System.out.println("NotNull "+posisiUntukPindah);
-                                            if(posisiUntukPindah!=-1){
-                                                System.out.println(yangAkanDihitung[i].getText()+" "+i);
-                                                int temp =indeksAktif;
-                                                indeksAktif=this.presenter.indexKotak(yangAkanDihitung[i]);
-                                                System.out.println(indeksAktif);
-                                                yangAkanDihitung[posisiUntukPindah]=yangAkanDihitung[i];
-                                                if(i!=posisiUntukPindah){
-                                                    yangAkanDihitung[i]=null;
-                                                }
-                                                this.presenter.moveKeTengah(posisiUntukPindah);
-                                                //moveKeTengah(posisiUntukPindah);
-                                                posisiUntukPindah=i;
-                                                indeksAktif=temp;
-                                            }
-                                        }
-                                    }
-                                }
-                                yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
-                                this.presenter.moveKeTengah(pos);
+                                this.presenter.cobaGeser(pos,posisiKosong,indeksAktif);
+                                
                                 //moveKeTengah(pos);
 
 
