@@ -114,7 +114,7 @@ public class Presenter {
 
         return posisiKotak;}
     
-        public void cobaGeser(int pos,int posisiKosong,int indeksAktif){
+    public void cobaGeser(int pos,int posisiKosong){
         boolean kedepan=true;
         int i = pos;
         int j = posisiKosong;
@@ -138,44 +138,42 @@ public class Presenter {
                     System.out.println("NotNull "+posisiUntukPindah);
                     if(posisiUntukPindah!=-1){
                         System.out.println(yangAkanDihitung[j].getText()+" "+j);
-                        int temp =indeksAktif;
-                        indeksAktif=indexKotak(yangAkanDihitung[j]);
-                        System.out.println(indeksAktif);
-                        yangAkanDihitung[posisiUntukPindah]=yangAkanDihitung[j];
+                        int temp =this.ui.indeksAktif;
+                        this.ui.indeksAktif=indexKotak(yangAkanDihitung[j]);
+                        System.out.println(this.ui.indeksAktif);
+                        this.yangAkanDihitung[posisiUntukPindah]=this.yangAkanDihitung[j];
                         moveKeTengah(posisiUntukPindah);
-                        // moveKeTengah(posisiUntukPindah);
                         yangAkanDihitung[j]=null;
                         posisiUntukPindah=j;
-                        indeksAktif=temp;
+                        this.ui.indeksAktif=temp;
                     }
                 }
             }
         }
         else {
             for (; i <= j; i++) {
-                if (yangAkanDihitung[i] == null) {
+                if (this.yangAkanDihitung[i] == null) {
                     System.out.println("Null " + i);
                     posisiUntukPindah = i;
                 } else {
                     System.out.println("NotNull " + posisiUntukPindah);
                     if (posisiUntukPindah != -1) {
                         System.out.println(yangAkanDihitung[i].getText() + " " + i);
-                        int temp = indeksAktif;
-                        indeksAktif = indexKotak(yangAkanDihitung[i]);
-                        System.out.println(indeksAktif);
-                        yangAkanDihitung[posisiUntukPindah] = yangAkanDihitung[i];
+                        int temp =  this.ui.indeksAktif;
+                        this.ui.indeksAktif = indexKotak(yangAkanDihitung[i]);
+                        System.out.println( this.ui.indeksAktif);
+                        this.yangAkanDihitung[posisiUntukPindah] = this.yangAkanDihitung[i];
                         if (i != posisiUntukPindah) {
-                            yangAkanDihitung[i] = null;
+                            this.yangAkanDihitung[i] = null;
                         }
                         moveKeTengah(posisiUntukPindah);
-                        //moveKeTengah(posisiUntukPindah);
                         posisiUntukPindah = i;
-                        indeksAktif = temp;
+                        this.ui.indeksAktif = temp;
                     }
                 }
             }
         }
-        yangAkanDihitung[pos]=ui.daftarKotakYangDibuat.get(indeksAktif);
+        this.yangAkanDihitung[pos]=ui.daftarKotakYangDibuat.get(this.ui.indeksAktif);
         moveKeTengah(pos);
     }
 
@@ -190,7 +188,6 @@ public class Presenter {
             int temp3=this.slot[posisi].getRect().top+diff;
 
             this.geserKotak(this.ui.indeksAktif,temp2,temp3);
-            //this.daftarKotakYangDibuat.get(this.indeksAktif).geser(temp2,temp3);
             this.ui.indeksAktif=-1;
             this.ui.resetCanvas();
 
@@ -211,7 +208,6 @@ public class Presenter {
         int indexKosong=-1;
         for(int i = 0;i<this.yangAkanDihitung.length;i++){
             if(this.yangAkanDihitung[i]==null){
-                System.out.println(i+" null");
                 return i;
             }
             else{

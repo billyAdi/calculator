@@ -154,29 +154,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
-
-  /**  public void moveKeTengah(int posisi){
-        if(this.indeksAktif!=-1){
-            Rect tempatKotak= rectList[posisi].getRect();
-            this.rectList[posisi].isi(this.daftarKotakYangDibuat.get(this.indeksAktif));
-            int temp1=this.daftarKotakYangDibuat.get(this.indeksAktif).getSize();
-            int diff = (rectList[posisi].getRect().right-rectList[posisi].getRect().left-temp1)/2;
-
-            int temp2=tempatKotak.left+diff;
-            int temp3=tempatKotak.top+diff;
-
-            this.presenter.geserKotak(this.indeksAktif,temp2,temp3);
-            //this.daftarKotakYangDibuat.get(this.indeksAktif).geser(temp2,temp3);
-            this.indeksAktif=-1;
-            this.resetCanvas();
-
-        }
-    }
-   */
-
-
     @Override
     public void onClick(View view) {
         if(view.getId()==this.button1.getId()||view.getId()==this.button2.getId()){
@@ -199,9 +176,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int size = (5*this.sizeSlot/6);
                 IsiKotak isi = new IsiKotak(new Rect(this.x,this.y ,this.x+size ,this.y+size ),teks,size);
                 this.presenter.addKotak(isi);
-                //daftarKotakYangDibuat.add(isi);
-
-
 
                  if(this.x==25+4*(40+size)){
                      if(this.y==this.yMin+2*(size+30)){
@@ -225,13 +199,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else if(view.getId()==this.buttonCalculate.getId()){
 
-        //   for(int i=0;i<this.hitung.size();i++){
-          //      System.out.println(this.hitung.get(i)+" isi hitungan");
-           // }
-
             if(this.presenter.isValid()) {
                 String hasil = this.presenter.hitung();
-                Log.d("hasil hitung",hasil);
                 if(this.presenter.isDouble(hasil)) {
                     if (Double.parseDouble(hasil) % 1 == 0) {
                         this.tv_hasil.setText((int)Double.parseDouble(hasil) + "");
@@ -287,25 +256,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Log.d("Nope", "posKosong: "+posisiKosong);
                             if( posisiKosong!=-1){
 
-                                this.presenter.cobaGeser(pos,posisiKosong,indeksAktif);
-                                
-                                //moveKeTengah(pos);
-
-
+                                this.presenter.cobaGeser(pos,posisiKosong);
                             }
                             else{
                                 this.resetCanvas();
                                 this.presenter.geserKotak(this.indeksAktif,(int)startX,(int)startY);
-                                //this.daftarKotakYangDibuat.get(this.indeksAktif).geser((int)startX,(int)startY);
-
                             }
 
                         }
                         else{
                             yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
                             this.presenter.moveKeTengah(pos);
-                            //moveKeTengah(pos);
-
                         }
                     }
                 }
@@ -317,39 +278,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-  /**  public int indexKotak(IsiKotak isi){
-        int idx=-1;
-        for(int i = 0;i<daftarKotakYangDibuat.size();i++){
-            if(isi==daftarKotakYangDibuat.get(i)){
-                idx=i;
-            }
-        }
-        return idx;
-    }
 
-    public int indexKotakKosong(){
-        int indexKosong=-1;
-        for(int i = 0;i<yangAkanDihitung.length;i++){
-            if(yangAkanDihitung[i]==null){
-                System.out.println(i+" null");
-                return i;
-            }
-            else{
-                System.out.println(i+" "+yangAkanDihitung[i].getText());
-            }
-        }
-        return indexKosong;
-    }
-   */
 
     private class MyCustomGestureListener extends GestureDetector.SimpleOnGestureListener{
 
         @Override
         public boolean onDown(MotionEvent motionEvent) {
             int temp=presenter.insideBlueRect(motionEvent.getX(),motionEvent.getY());
-            //int temp=insideBlueRect(motionEvent.getX(),motionEvent.getY());
             int temp2=presenter.insideRect(motionEvent.getX(),motionEvent.getY());
-            //int temp2=insideRect(motionEvent.getX(),motionEvent.getY());
             if(temp!=-1) {
                 indeksAktif=temp;
 
@@ -360,7 +296,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startY=daftarKotakYangDibuat.get(temp).getRect().top;
                 pos1=motionEvent.getX();
                 pos2=motionEvent.getY();
-           //     System.out.println("inside "+indeksAktif);
                 for(int i =0;i<yangAkanDihitung.length;i++){
                     if(yangAkanDihitung[i]==daftarKotakYangDibuat.get(indeksAktif)){
                         yangAkanDihitung[i]=null;
@@ -381,9 +316,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int temp2=daftarKotakYangDibuat.get(indeksAktif).getRect().top;
 
                 presenter.geserKotak(indeksAktif,temp1+selisihX,temp2+selisihY);
-               // daftarKotakYangDibuat.get(indeksAktif).geser(temp1+selisihX,temp2+selisihY);
-
-
 
                 pos1 = motionEvent1.getX();
                 pos2 = motionEvent1.getY();
@@ -396,7 +328,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onLongPress(MotionEvent motionEvent) {
             int temp1=presenter.insideBlueRect(motionEvent.getX(),motionEvent.getY());
-            //int temp1=insideBlueRect(motionEvent.getX(),motionEvent.getY());
             int temp2=presenter.insideRect(motionEvent.getX(),motionEvent.getY());
             if(temp1!=-1){
 
@@ -404,7 +335,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     rectList[temp2].buang();
                 }
                 presenter.removeKotak(temp1);
-                //daftarKotakYangDibuat.remove(temp1);
                 indeksAktif=-1;
                 resetCanvas();
             }
