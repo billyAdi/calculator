@@ -159,8 +159,10 @@ public class Hitungan{
                 }
                 else{
 
-                    stack.push(Double.parseDouble(res));
-                    res="";
+                    if(res!=""){
+                        stack.push(Double.parseDouble(res));
+                        res="";
+                    }
                 }
             } else if (isOperator(c)) {
 
