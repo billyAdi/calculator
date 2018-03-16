@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -253,7 +252,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         if(this.rectList[pos].cekIsi()){
                             int posisiKosong = this.presenter.indexKotakKosong();
-                            Log.d("Nope", "posKosong: "+posisiKosong);
                             if( posisiKosong!=-1){
 
                                 this.presenter.cobaGeser(pos,posisiKosong);

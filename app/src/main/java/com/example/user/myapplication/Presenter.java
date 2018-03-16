@@ -132,15 +132,11 @@ public class Presenter {
                 if(yangAkanDihitung[j]==null){
 
                     posisiUntukPindah=j;
-                    System.out.println("Null "+posisiUntukPindah);
                 }
                 else{
-                    System.out.println("NotNull "+posisiUntukPindah);
                     if(posisiUntukPindah!=-1){
-                        System.out.println(yangAkanDihitung[j].getText()+" "+j);
                         int temp =this.ui.indeksAktif;
                         this.ui.indeksAktif=indexKotak(yangAkanDihitung[j]);
-                        System.out.println(this.ui.indeksAktif);
                         this.yangAkanDihitung[posisiUntukPindah]=this.yangAkanDihitung[j];
                         moveKeTengah(posisiUntukPindah);
                         yangAkanDihitung[j]=null;
@@ -153,15 +149,11 @@ public class Presenter {
         else {
             for (; i <= j; i++) {
                 if (this.yangAkanDihitung[i] == null) {
-                    System.out.println("Null " + i);
                     posisiUntukPindah = i;
                 } else {
-                    System.out.println("NotNull " + posisiUntukPindah);
                     if (posisiUntukPindah != -1) {
-                        System.out.println(yangAkanDihitung[i].getText() + " " + i);
                         int temp =  this.ui.indeksAktif;
                         this.ui.indeksAktif = indexKotak(yangAkanDihitung[i]);
-                        System.out.println( this.ui.indeksAktif);
                         this.yangAkanDihitung[posisiUntukPindah] = this.yangAkanDihitung[i];
                         if (i != posisiUntukPindah) {
                             this.yangAkanDihitung[i] = null;
@@ -209,9 +201,6 @@ public class Presenter {
         for(int i = 0;i<this.yangAkanDihitung.length;i++){
             if(this.yangAkanDihitung[i]==null){
                 return i;
-            }
-            else{
-                System.out.println(i+" "+yangAkanDihitung[i].getText());
             }
         }
         return indexKosong;
