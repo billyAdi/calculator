@@ -14,7 +14,7 @@ public class Hitungan{
     }
 
     public  String hasilHitung(ArrayList<String> str){
-        if(str.size()>1){
+
             String s=new String();
             for (int i=0;i<str.size();i++){
                 s+=str.get(i);
@@ -22,10 +22,7 @@ public class Hitungan{
 
             double temp=evalInfix(s);
             return  temp+"";
-        }
-        else{
-            return str.get(0);
-        }
+        
 
     }
 
@@ -155,6 +152,7 @@ public class Hitungan{
 
     public  double evaluatePostfix(String postfixExpr) {
         char[] chars = postfixExpr.toCharArray();
+        System.out.println(postfixExpr);
         String res = "";
         Stack<Double> stack = new Stack<Double>();
         for (char c : chars) {
@@ -204,7 +202,10 @@ public class Hitungan{
                 }
             }
         }
-        return stack.pop();
+        if(stack.empty()){
+            return Double.parseDouble(res);
+        }
+        else{ return stack.pop();}
     }
     private  int getPrecedence(char operator) {
         int ret = 0;
