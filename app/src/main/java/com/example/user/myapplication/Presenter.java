@@ -1,5 +1,6 @@
 package com.example.user.myapplication;
 
+
 import java.util.ArrayList;
 
 /**
@@ -12,6 +13,7 @@ public class Presenter {
     private ArrayList<IsiKotak> isiKotak;
     private KotakExtension[] slot;
     private ArrayList<String> hitung;
+    private IsiKotak[] yangAkanDihitung;
 
     public Presenter(MainActivity ui) {
         this.ui = ui;
@@ -19,6 +21,7 @@ public class Presenter {
         this.slot=this.ui.rectList;
         this.hitungan=new Hitungan();
         this.hitung=new  ArrayList<String>();
+        this.yangAkanDihitung=this.ui.yangAkanDihitung;
     }
 
     public void geserKotak(int position,int x,int y){
@@ -51,5 +54,105 @@ public class Presenter {
 
     public boolean isDouble(String string){
         return this.hitungan.isDouble(string);
+    }
+    public int insideBlueRect(float x,float y){
+        for(int i = 0;i<this.isiKotak.size();i++) {
+
+            if (this.isiKotak.get(i).getRect().left<=x && this.isiKotak.get(i).getRect().right>=x) {
+                if(this.isiKotak.get(i).getRect().top<=y&&this.isiKotak.get(i).getRect().bottom>=y){
+                    return i;
+                }
+            }
+
+        }
+        return -1;
+    }
+
+    public int insideRect(float x,float y){
+        for(int i = 0;i<this.slot.length;i++) {
+            if (this.slot[i].getRect().left<=x && this.slot[i].getRect().right>=x) {
+                if(this.slot[i].getRect().top<=y&&this.slot[i].getRect().bottom>=y){
+                    return i;
+                }
+            }
+
+        }
+        return -1;
+    }
+
+    public int insideRect(IsiKotak isi){
+        int posisiKotak=-1;
+        int bedaTengahX=Integer.MAX_VALUE,bedaTengahY=Integer.MAX_VALUE;
+
+        for(int i = 0;i<slot.length;i++) {
+
+            if ((slot[i].getRect().left<=isi.getRect().left && slot[i].getRect().right>=isi.getRect().left)||(slot[i].getRect().left<=isi.getRect().right && slot[i].getRect().right>=isi.getRect().right)) {
+                if((slot[i].getRect().top<=isi.getRect().top && slot[i].getRect().bottom>=isi.getRect().top) ||(slot[i].getRect().top<=isi.getRect().bottom && slot[i].getRect().bottom>=isi.getRect().bottom) ){
+                    int diffX = Math.abs(slot[i].posisiTengahX()-isi.posisiTengahX());
+                    int diffY = Math.abs(slot[i].posisiTengahY()-isi.posisiTengahY());
+                    if(diffX<bedaTengahX && diffY<bedaTengahY){
+                        posisiKotak=i;
+                        bedaTengahX=diffX;
+                        bedaTengahY=diffY;
+                    }
+                    else if(diffX>bedaTengahX && diffY>bedaTengahY){
+
+                    }
+                    else {
+                        double jarakYangDicek = Math.sqrt((diffX * diffX) + (diffY * diffY));
+                        double jarakTersimpan = Math.sqrt((bedaTengahX *bedaTengahX) + (bedaTengahY * bedaTengahY));
+                        if(jarakTersimpan>jarakYangDicek){
+                            posisiKotak=i;
+                            bedaTengahX=diffX;
+                            bedaTengahY=diffY;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        return posisiKotak;}
+
+    public void moveKeTengah(int posisi){
+        if(this.ui.indeksAktif!=-1){
+
+            this.slot[posisi].isi(this.isiKotak.get(this.ui.indeksAktif));
+            int temp1=this.isiKotak.get(this.ui.indeksAktif).getSize();
+            int diff = (this.slot[posisi].getRect().right-slot[posisi].getRect().left-temp1)/2;
+
+            int temp2=this.slot[posisi].getRect().left+diff;
+            int temp3=this.slot[posisi].getRect().top+diff;
+
+            this.geserKotak(this.ui.indeksAktif,temp2,temp3);
+            //this.daftarKotakYangDibuat.get(this.indeksAktif).geser(temp2,temp3);
+            this.ui.indeksAktif=-1;
+            this.ui.resetCanvas();
+
+        }
+    }
+
+    public int indexKotak(IsiKotak isi){
+        int idx=-1;
+        for(int i = 0;i<this.isiKotak.size();i++){
+            if(isi==this.isiKotak.get(i)){
+                idx=i;
+            }
+        }
+        return idx;
+    }
+
+    public int indexKotakKosong(){
+        int indexKosong=-1;
+        for(int i = 0;i<this.yangAkanDihitung.length;i++){
+            if(this.yangAkanDihitung[i]==null){
+                System.out.println(i+" null");
+                return i;
+            }
+            else{
+                System.out.println(i+" "+yangAkanDihitung[i].getText());
+            }
+        }
+        return indexKosong;
     }
 }

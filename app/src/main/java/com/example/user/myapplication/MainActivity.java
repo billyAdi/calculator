@@ -153,67 +153,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public int insideRect(IsiKotak isi){
-        int posisiKotak=-1;
-        int bedaTengahX=Integer.MAX_VALUE,bedaTengahY=Integer.MAX_VALUE;
 
-        for(int i = 0;i<rectList.length;i++) {
-            Rect rectTemp = rectList[i].getRect();
-            if ((rectTemp.left<=isi.getRect().left && rectTemp.right>=isi.getRect().left)||(rectTemp.left<=isi.getRect().right && rectTemp.right>=isi.getRect().right)) {
-                if((rectTemp.top<=isi.getRect().top && rectTemp.bottom>=isi.getRect().top) ||(rectTemp.top<=isi.getRect().bottom && rectTemp.bottom>=isi.getRect().bottom) ){
-                    int diffX = Math.abs(rectList[i].posisiTengahX()-isi.posisiTengahX());
-                    int diffY = Math.abs(rectList[i].posisiTengahY()-isi.posisiTengahY());
-                    if(diffX<bedaTengahX && diffY<bedaTengahY){
-                        posisiKotak=i;
-                        bedaTengahX=diffX;
-                        bedaTengahY=diffY;
-                    }
-                    else if(diffX>bedaTengahX && diffY>bedaTengahY){
 
-                    }
-                    else {
-                        double jarakYangDicek = Math.sqrt((diffX * diffX) + (diffY * diffY));
-                        double jarakTersimpan = Math.sqrt((bedaTengahX *bedaTengahX) + (bedaTengahY * bedaTengahY));
-                        if(jarakTersimpan>jarakYangDicek){
-                            posisiKotak=i;
-                            bedaTengahX=diffX;
-                            bedaTengahY=diffY;
-                        }
-                    }
-                }
-            }
 
-        }
 
-        return posisiKotak;}
-
-    public int insideBlueRect(float x,float y){
-        for(int i = 0;i<this.daftarKotakYangDibuat.size();i++) {
-            Rect rectTemp = this.daftarKotakYangDibuat.get(i).getRect();
-            if (rectTemp.left<=x && rectTemp.right>=x) {
-                if(rectTemp.top<=y&&rectTemp.bottom>=y){
-                    return i;
-                }
-            }
-
-        }
-        return -1;
-    }
-
-    public int insideRect(float x,float y){
-        for(int i = 0;i<this.rectList.length;i++) {
-            Rect rectTemp = this.rectList[i].getRect();
-            if (rectTemp.left<=x && rectTemp.right>=x) {
-                if(rectTemp.top<=y&&rectTemp.bottom>=y){
-                    return i;
-                }
-            }
-
-        }
-        return -1;
-    }
-
-    public void moveKeTengah(int posisi){
+  /**  public void moveKeTengah(int posisi){
         if(this.indeksAktif!=-1){
             Rect tempatKotak= rectList[posisi].getRect();
             this.rectList[posisi].isi(this.daftarKotakYangDibuat.get(this.indeksAktif));
@@ -230,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+   */
 
 
     @Override
@@ -333,12 +278,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case MotionEvent.ACTION_UP:
                 if(this.indeksAktif!=-1){
 
-                    int pos = insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif));
+                    int pos = presenter.insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif));
                     if(pos!=-1){
 
 
                         if(this.rectList[pos].cekIsi()){
-                            int posisiKosong = this.indexKotakKosong();
+                            int posisiKosong = this.presenter.indexKotakKosong();
                             Log.d("Nope", "posKosong: "+posisiKosong);
                             if( posisiKosong!=-1){
                                 boolean kedepan=true;
@@ -365,10 +310,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             if(posisiUntukPindah!=-1){
                                                 System.out.println(yangAkanDihitung[j].getText()+" "+j);
                                                 int temp =indeksAktif;
-                                                indeksAktif=indexKotak(yangAkanDihitung[j]);
+                                                indeksAktif=this.presenter.indexKotak(yangAkanDihitung[j]);
                                                 System.out.println(indeksAktif);
                                                 yangAkanDihitung[posisiUntukPindah]=yangAkanDihitung[j];
-                                                moveKeTengah(posisiUntukPindah);
+                                                this.presenter.moveKeTengah(posisiUntukPindah);
+                                               // moveKeTengah(posisiUntukPindah);
                                                 yangAkanDihitung[j]=null;
                                                 posisiUntukPindah=j;
                                                 indeksAktif=temp;
@@ -387,14 +333,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             if(posisiUntukPindah!=-1){
                                                 System.out.println(yangAkanDihitung[i].getText()+" "+i);
                                                 int temp =indeksAktif;
-                                                indeksAktif=indexKotak(yangAkanDihitung[i]);
+                                                indeksAktif=this.presenter.indexKotak(yangAkanDihitung[i]);
                                                 System.out.println(indeksAktif);
                                                 yangAkanDihitung[posisiUntukPindah]=yangAkanDihitung[i];
                                                 if(i!=posisiUntukPindah){
                                                     yangAkanDihitung[i]=null;
                                                 }
-
-                                                moveKeTengah(posisiUntukPindah);
+                                                this.presenter.moveKeTengah(posisiUntukPindah);
+                                                //moveKeTengah(posisiUntukPindah);
                                                 posisiUntukPindah=i;
                                                 indeksAktif=temp;
                                             }
@@ -402,7 +348,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     }
                                 }
                                 yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
-                                moveKeTengah(pos);
+                                this.presenter.moveKeTengah(pos);
+                                //moveKeTengah(pos);
 
 
                             }
@@ -416,7 +363,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         else{
                             yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
-                            moveKeTengah(pos);
+                            this.presenter.moveKeTengah(pos);
+                            //moveKeTengah(pos);
 
                         }
                     }
@@ -429,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public int indexKotak(IsiKotak isi){
+  /**  public int indexKotak(IsiKotak isi){
         int idx=-1;
         for(int i = 0;i<daftarKotakYangDibuat.size();i++){
             if(isi==daftarKotakYangDibuat.get(i)){
@@ -452,13 +400,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return indexKosong;
     }
+   */
 
     private class MyCustomGestureListener extends GestureDetector.SimpleOnGestureListener{
 
         @Override
         public boolean onDown(MotionEvent motionEvent) {
-            int temp=insideBlueRect(motionEvent.getX(),motionEvent.getY());
-            int temp2=insideRect(motionEvent.getX(),motionEvent.getY());
+            int temp=presenter.insideBlueRect(motionEvent.getX(),motionEvent.getY());
+            //int temp=insideBlueRect(motionEvent.getX(),motionEvent.getY());
+            int temp2=presenter.insideRect(motionEvent.getX(),motionEvent.getY());
+            //int temp2=insideRect(motionEvent.getX(),motionEvent.getY());
             if(temp!=-1) {
                 indeksAktif=temp;
 
@@ -504,8 +455,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onLongPress(MotionEvent motionEvent) {
-            int temp1=insideBlueRect(motionEvent.getX(),motionEvent.getY());
-            int temp2=insideRect(motionEvent.getX(),motionEvent.getY());
+            int temp1=presenter.insideBlueRect(motionEvent.getX(),motionEvent.getY());
+            //int temp1=insideBlueRect(motionEvent.getX(),motionEvent.getY());
+            int temp2=presenter.insideRect(motionEvent.getX(),motionEvent.getY());
             if(temp1!=-1){
 
                 if(temp2!=-1){
