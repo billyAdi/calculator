@@ -329,22 +329,96 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
+   @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
 
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_UP:
                 if(this.indeksAktif!=-1){
+
                     int pos = insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif));
                     if(pos!=-1){
 
-                        yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
+
                         if(this.rectList[pos].cekIsi()){
-                            this.resetCanvas();
-                            this.daftarKotakYangDibuat.get(this.indeksAktif).geser((int)startX,(int)startY);
-                            resetCanvas();
+                            int posisiKosong = this.indexKotakKosong();
+                            Log.d("Nope", "posKosong: "+posisiKosong);
+                            if( posisiKosong!=-1){
+                                boolean kedepan=true;
+                                int i = pos;
+                                int j = posisiKosong;
+
+                                int posisiUntukPindah=-1;
+                                if(pos>posisiKosong){
+                                    kedepan=false;
+
+                                    i = posisiKosong;
+                                    j = pos;
+                                }
+
+                                if(kedepan){
+                                    for(;j>=i;j--){
+                                        if(yangAkanDihitung[j]==null){
+
+                                            posisiUntukPindah=j;
+                                            System.out.println("Null "+posisiUntukPindah);
+                                        }
+                                        else{
+                                            System.out.println("NotNull "+posisiUntukPindah);
+                                            if(posisiUntukPindah!=-1){
+                                                System.out.println(yangAkanDihitung[j].getText()+" "+j);
+                                                int temp =indeksAktif;
+                                                indeksAktif=indexKotak(yangAkanDihitung[j]);
+                                                System.out.println(indeksAktif);
+                                                yangAkanDihitung[posisiUntukPindah]=yangAkanDihitung[j];
+                                                moveKeTengah(posisiUntukPindah);
+                                                yangAkanDihitung[j]=null;
+                                                posisiUntukPindah=j;
+                                                indeksAktif=temp;
+                                            }
+                                        }
+                                    }
+                                }
+                                else{
+                                    for(;i<=j;i++){
+                                        if(yangAkanDihitung[i]==null){
+                                            System.out.println("Null "+i);
+                                            posisiUntukPindah=i;
+                                        }
+                                        else{
+                                            System.out.println("NotNull "+posisiUntukPindah);
+                                            if(posisiUntukPindah!=-1){
+                                                System.out.println(yangAkanDihitung[i].getText()+" "+i);
+                                                int temp =indeksAktif;
+                                                indeksAktif=indexKotak(yangAkanDihitung[i]);
+                                                System.out.println(indeksAktif);
+                                                yangAkanDihitung[posisiUntukPindah]=yangAkanDihitung[i];
+                                                if(i!=posisiUntukPindah){
+                                                    yangAkanDihitung[i]=null;
+                                                }
+
+                                                moveKeTengah(posisiUntukPindah);
+                                                posisiUntukPindah=i;
+                                                indeksAktif=temp;
+                                            }
+                                        }
+                                    }
+                                }
+                                yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
+                                moveKeTengah(pos);
+
+
+                            }
+                            else{
+                                yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
+                                this.resetCanvas();
+                                this.daftarKotakYangDibuat.get(this.indeksAktif).geser((int)startX,(int)startY);
+                                resetCanvas();
+                            }
+
                         }
                         else{
+                            yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
                             moveKeTengah(pos);
 
                         }
@@ -353,8 +427,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.indeksAktif=-1;
                 break;
         }
+        this.drawBlueRect();
         return this.mGestureDetector.onTouchEvent(motionEvent);
 
+    }
+
+    public int indexKotak(IsiKotak isi){
+        int idx=-1;
+        for(int i = 0;i<daftarKotakYangDibuat.size();i++){
+            if(isi==daftarKotakYangDibuat.get(i)){
+                idx=i;
+            }
+        }
+        return idx;
+    }
+
+    public int indexKotakKosong(){
+        int indexKosong=-1;
+        for(int i = 0;i<yangAkanDihitung.length;i++){
+            if(yangAkanDihitung[i]==null){
+                System.out.println(i+" null");
+                return i;
+            }
+            else{
+                System.out.println(i+" "+yangAkanDihitung[i].getText());
+            }
+        }
+        return indexKosong;
     }
 
     private class MyCustomGestureListener extends GestureDetector.SimpleOnGestureListener{
