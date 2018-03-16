@@ -8,11 +8,12 @@ import java.util.Stack;
 public class Hitungan{
     static boolean nextAngka=true;
     static boolean divZero=false;
+
     public Hitungan(){
 
     }
 
-    public static double hitung(double angkaAwal, String operator, double angkaNext){
+    public  double hitung(double angkaAwal, String operator, double angkaNext){
         //System.out.println("masuk itungan");
         double result = 0;
        // System.out.println(angkaAwal+"    aa"+angkaNext);
@@ -47,7 +48,7 @@ public class Hitungan{
 
     }
 
-    public static String hasilHitung(ArrayList<String> str){
+    public  String hasilHitung(ArrayList<String> str){
         // double temp = cekhitungHasil(str);
 
         String s=new String();
@@ -67,7 +68,7 @@ public class Hitungan{
          */
     }
 
-    public static double cekhitungHasil(ArrayList<String> str) {
+    public  double cekhitungHasil(ArrayList<String> str) {
         divZero=false;
         int i = 0;
         double angkaTersimpan = 0;
@@ -94,7 +95,7 @@ public class Hitungan{
         return angkaTersimpan;
     }
 
-    public static boolean isValid(ArrayList<String> str){
+    public  boolean isValid(ArrayList<String> str){
         nextAngka=true;
         String s=new String();
         for (int i=0;i<str.size();i++){
@@ -123,7 +124,7 @@ public class Hitungan{
         }
     }
 
-    public static boolean isBalance(String str){
+    public  boolean isBalance(String str){
         Stack<Character> stack=new Stack<Character>();
         for (int i=0;i<str.length();i++){
             char c=str.charAt(i);
@@ -140,7 +141,7 @@ public class Hitungan{
         return stack.empty();
     }
 
-    public static boolean isDouble(String str) {
+    public  boolean isDouble(String str) {
         try {
             Double.parseDouble(str);
             return true;
@@ -149,7 +150,7 @@ public class Hitungan{
         }
     }
 
-    public static boolean valid(String next){
+    public  boolean valid(String next){
         Log.d("Angka",next+" "+nextAngka);
         if(next.contains("+")|| next.contains("-") || next.contains("/") || next.contains("*")){
             if(nextAngka==true){
@@ -181,11 +182,11 @@ public class Hitungan{
     private static final String operators = "-+/*";
     private static final String operands = "0123456789|";
 
-    public static double evalInfix(String infix) {
+    public  double evalInfix(String infix) {
         return evaluatePostfix(convert2Postfix(infix));
     }
 
-    public static String convert2Postfix(String infixExpr) {
+    public  String convert2Postfix(String infixExpr) {
         char[] chars = infixExpr.toCharArray();
         Stack<Character> stack = new Stack<Character>();
         StringBuilder out = new StringBuilder(infixExpr.length());
@@ -225,7 +226,7 @@ public class Hitungan{
         return out.toString();
     }
 
-    public static double evaluatePostfix(String postfixExpr) {
+    public  double evaluatePostfix(String postfixExpr) {
         Log.d("Nopest Nope", "evaluatePostfix: "+postfixExpr);
         char[] chars = postfixExpr.toCharArray();
         String res = "";
@@ -283,7 +284,7 @@ public class Hitungan{
         }
         return stack.pop();
     }
-    private static int getPrecedence(char operator) {
+    private  int getPrecedence(char operator) {
         int ret = 0;
         if (operator == '-' || operator == '+') {
             ret = 1;
@@ -292,15 +293,15 @@ public class Hitungan{
         }
         return ret;
     }
-    private static boolean operatorGreaterOrEqual(char op1, char op2) {
+    private  boolean operatorGreaterOrEqual(char op1, char op2) {
         return getPrecedence(op1) >= getPrecedence(op2);
     }
 
-    private static boolean isOperator(char val) {
+    private  boolean isOperator(char val) {
         return operators.indexOf(val) >= 0;
     }
 
-    private static boolean isOperand(char val) {
+    private  boolean isOperand(char val) {
         return operands.indexOf(val) >= 0;
     }
 }

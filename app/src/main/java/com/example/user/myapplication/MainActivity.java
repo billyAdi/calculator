@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected ArrayList<IsiKotak> daftarKotakYangDibuat;
     protected int x,y,indeksAktif,yMin,sizeSlot;
     protected IsiKotak[] yangAkanDihitung;
-    protected ArrayList<String> hitung;
     protected double startX,startY,pos1,pos2;
+    protected Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +60,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         this.rectList=new KotakExtension[getResources().getInteger(R.integer.banyakKotak)];
         this.yangAkanDihitung=new IsiKotak[getResources().getInteger(R.integer.banyakKotak)];
+        this.presenter=new Presenter(this);
         this.x=25;
-        this.hitung = new ArrayList<String>();
         this.indeksAktif=-1;
-
         this.mGestureDetector=new GestureDetector(this,new MyCustomGestureListener());
         this.spinner.setAdapter(adapter);
         this.spinner.setOnItemSelectedListener(this);
@@ -224,7 +223,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int temp2=tempatKotak.left+diff;
             int temp3=tempatKotak.top+diff;
 
-            this.daftarKotakYangDibuat.get(this.indeksAktif).geser(temp2,temp3);
+            this.presenter.geserKotak(this.indeksAktif,temp2,temp3);
+            //this.daftarKotakYangDibuat.get(this.indeksAktif).geser(temp2,temp3);
             this.indeksAktif=-1;
             this.resetCanvas();
 
@@ -253,22 +253,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             else if(!teks.equals("")){
                 int size = (5*this.sizeSlot/6);
                 IsiKotak isi = new IsiKotak(new Rect(this.x,this.y ,this.x+size ,this.y+size ),teks,size);
-                daftarKotakYangDibuat.add(isi);
+                this.presenter.addKotak(isi);
+                //daftarKotakYangDibuat.add(isi);
 
-                this.resetCanvas();
 
-                 if(this.x==25+4*(25+size)){
-                     if(this.y==this.yMin+2*(size+25)){
+
+                 if(this.x==25+4*(40+size)){
+                     if(this.y==this.yMin+2*(size+30)){
                          this.y=this.yMin;
                      }
                     else {
 
-                         this.y = this.y + 25 + size;
+                         this.y = this.y + 30 + size;
                      }
                      this.x = 25;
                 }
                 else{
-                    this.x=this.x+25+size;
+                    this.x=this.x+40+size;
                 }
 
             }
@@ -278,18 +279,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         else if(view.getId()==this.buttonCalculate.getId()){
-            for (int i=0;i<this.rectList.length;i++){
-                if(this.rectList[i].cekIsi()){
-                    this.hitung.add(this.rectList[i].getIsi().getText());
-                }
-            }
+
         //   for(int i=0;i<this.hitung.size();i++){
           //      System.out.println(this.hitung.get(i)+" isi hitungan");
            // }
-            if(Hitungan.isValid(hitung)) {
-                String hasil = Hitungan.hasilHitung(hitung);
+
+            if(this.presenter.isValid()) {
+                String hasil = this.presenter.hitung();
                 Log.d("hasil hitung",hasil);
-                if(Hitungan.isDouble(hasil)) {
+                if(this.presenter.isDouble(hasil)) {
                     if (Double.parseDouble(hasil) % 1 == 0) {
                         this.tv_hasil.setText((int)Double.parseDouble(hasil) + "");
                     } else {
@@ -298,7 +296,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 else{
-
                     Toast toast=Toast.makeText(this,"Dibagi 0",Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -308,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast toast=Toast.makeText(this,"Terjadi kesalahan input",Toast.LENGTH_LONG);
                 toast.show();
             }
-            this.hitung=new ArrayList<String>();
+
 
         }
         else if(view.getId()==this.buttonReset.getId()){
@@ -411,8 +408,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                             else{
                                 this.resetCanvas();
-                                this.daftarKotakYangDibuat.get(this.indeksAktif).geser((int)startX,(int)startY);
-                                resetCanvas();
+                                this.presenter.geserKotak(this.indeksAktif,(int)startX,(int)startY);
+                                //this.daftarKotakYangDibuat.get(this.indeksAktif).geser((int)startX,(int)startY);
+
                             }
 
                         }
@@ -491,9 +489,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int temp1=daftarKotakYangDibuat.get(indeksAktif).getRect().left;
                 int temp2=daftarKotakYangDibuat.get(indeksAktif).getRect().top;
 
-                daftarKotakYangDibuat.get(indeksAktif).geser(temp1+selisihX,temp2+selisihY);
+                presenter.geserKotak(indeksAktif,temp1+selisihX,temp2+selisihY);
+               // daftarKotakYangDibuat.get(indeksAktif).geser(temp1+selisihX,temp2+selisihY);
 
-                resetCanvas();
+
 
                 pos1 = motionEvent1.getX();
                 pos2 = motionEvent1.getY();
@@ -512,7 +511,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(temp2!=-1){
                     rectList[temp2].buang();
                 }
-                daftarKotakYangDibuat.remove(temp1);
+                presenter.removeKotak(temp1);
+                //daftarKotakYangDibuat.remove(temp1);
                 indeksAktif=-1;
                 resetCanvas();
             }
