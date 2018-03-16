@@ -14,13 +14,18 @@ public class Hitungan{
     }
 
     public  String hasilHitung(ArrayList<String> str){
-        String s=new String();
-        for (int i=0;i<str.size();i++){
-            s+=str.get(i);
-        }
+        if(str.size()>1){
+            String s=new String();
+            for (int i=0;i<str.size();i++){
+                s+=str.get(i);
+            }
 
-        double temp=evalInfix(s);
-        return  temp+"";
+            double temp=evalInfix(s);
+            return  temp+"";
+        }
+        else{
+            return str.get(0);
+        }
 
     }
 
