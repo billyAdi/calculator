@@ -1,16 +1,14 @@
 package com.example.user.myapplication;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Stack;
 
 public class Hitungan{
-    static boolean nextAngka=true;
-    static boolean divZero=false;
+    private boolean nextAngka;
+
 
     public Hitungan(){
-
+        this.nextAngka=true;
     }
 
     public  String hasilHitung(ArrayList<String> str){
@@ -22,7 +20,7 @@ public class Hitungan{
 
             double temp=evalInfix(s);
             return  temp+"";
-        
+
 
     }
 
@@ -152,7 +150,6 @@ public class Hitungan{
 
     public  double evaluatePostfix(String postfixExpr) {
         char[] chars = postfixExpr.toCharArray();
-        System.out.println(postfixExpr);
         String res = "";
         Stack<Double> stack = new Stack<Double>();
         for (char c : chars) {
