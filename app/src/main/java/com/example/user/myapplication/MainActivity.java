@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,10 +32,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected Bitmap mBitmap;
     protected Canvas mCanvas;
     protected Paint paint1,paint2,paint3;
-    protected KotakExtension[] rectList;
-    protected ArrayList<IsiKotak> daftarKotakYangDibuat;
+
     protected int x,y,indeksAktif,yMin,sizeSlot;
-    protected IsiKotak[] yangAkanDihitung;
+
     protected double startX,startY,pos1,pos2;
     protected Presenter presenter;
 
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.daftarKotakYangDibuat=new ArrayList<IsiKotak>();
+
         this.button1=this.findViewById(R.id.btn_add1);
         this.button2=this.findViewById(R.id.btn_add2);
         this.buttonCalculate=this.findViewById(R.id.btn_calculate);
@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        this.rectList=new KotakExtension[getResources().getInteger(R.integer.banyakKotak)];
-        this.yangAkanDihitung=new IsiKotak[getResources().getInteger(R.integer.banyakKotak)];
         this.presenter=new Presenter(this);
         this.x=25;
         this.indeksAktif=-1;
@@ -80,9 +78,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.paint1.setStrokeWidth(5);
         this.paint1.setStyle(Paint.Style.STROKE);
         this.paint2=new Paint();
-        this.paint2.setColor(Color.BLACK);
+        this.paint2.setColor(getResources().getColor(R.color.colorText));
         this.paint2.setStyle(Paint.Style.FILL);
-        this.paint2.setTextSize(40);
+        float ukuranFont = getResources().getInteger(R.integer.ukuranFont) * getResources().getDisplayMetrics().scaledDensity;
+        this.paint2.setTextSize(ukuranFont);
         this.paint2.setTextAlign(Paint.Align.CENTER);
         this.paint3=new Paint();
         this.paint3.setStyle(Paint.Style.FILL);
@@ -113,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         for(int i  = 0;i<getResources().getInteger(R.integer.banyakKotak);i++){
             Rect rectData = new Rect(x,y,x+size,y+size);
-            rectList[i]=new KotakExtension(rectData);
+            this.presenter.rectList[i]=new KotakExtension(rectData);
             if((i+1)%banyakKotak!=0){
                 x+=25+size;
             }
@@ -134,18 +133,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void drawSlot(){
-        for (int i  = 0;i<rectList.length;i++){
-            this.mCanvas.drawRect(rectList[i].getRect(),this.paint1);
+        for (int i  = 0;i<this.presenter.rectList.length;i++){
+            this.mCanvas.drawRect(this.presenter.rectList[i].getRect(),this.paint1);
         }
     }
 
     public void drawBlueRect(){
+        System.out.println(""+this.presenter.isiKotak.size());
+        if(this.presenter.isiKotak.size()>0){
 
-        if(this.daftarKotakYangDibuat.size()>0){
-            for (int i=0;i<this.daftarKotakYangDibuat.size();i++){
+            for (int i=0;i<this.presenter.isiKotak.size();i++){
                     int temp=(int)(this.paint2.descent() + this.paint2.ascent() )/ 2;
-                    this.mCanvas.drawRect(this.daftarKotakYangDibuat.get(i).getRect(),this.paint3);
-                    this.mCanvas.drawText(this.daftarKotakYangDibuat.get(i).getText(),this.daftarKotakYangDibuat.get(i).posisiTengahX(),this.daftarKotakYangDibuat.get(i).posisiTengahY()-temp,this.paint2);
+                    this.mCanvas.drawRect(this.presenter.isiKotak.get(i).getRect(),this.paint3);
+                    this.mCanvas.drawText(this.presenter.isiKotak.get(i).getText(),this.presenter.isiKotak.get(i).posisiTengahX(),this.presenter.isiKotak.get(i).posisiTengahY()-temp,this.paint2);
             }
         }
 
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.et.setText("");
             }
 
-            if(this.daftarKotakYangDibuat.size()>=15){
+            if(this.presenter.isiKotak.size()>=15){
                 Toast toast=Toast.makeText(this,"Jumlah kotak maksimal 15",Toast.LENGTH_LONG);
                 toast.show();
 
@@ -175,6 +175,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int size = (5*this.sizeSlot/6);
                 IsiKotak isi = new IsiKotak(new Rect(this.x,this.y ,this.x+size ,this.y+size ),teks,size);
                 this.presenter.addKotak(isi);
+
+                
 
                  if(this.x==25+4*(40+size)){
                      if(this.y==this.yMin+2*(size+30)){
@@ -246,11 +248,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case MotionEvent.ACTION_UP:
                 if(this.indeksAktif!=-1){
 
-                    int pos = presenter.insideRect(this.daftarKotakYangDibuat.get(this.indeksAktif));
+                    int pos = presenter.insideRect(this.presenter.isiKotak.get(this.indeksAktif));
                     if(pos!=-1){
 
 
-                        if(this.rectList[pos].cekIsi()){
+                        if(this.presenter.rectList[pos].cekIsi()){
                             int posisiKosong = this.presenter.indexKotakKosong();
                             if( posisiKosong!=-1){
 
@@ -263,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         }
                         else{
-                            yangAkanDihitung[pos]=this.daftarKotakYangDibuat.get(this.indeksAktif);
+                            this.presenter.yangAkanDihitung[pos]=this.presenter.isiKotak.get(this.indeksAktif);
                             this.presenter.moveKeTengah(pos);
                         }
                     }
@@ -288,15 +290,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 indeksAktif=temp;
 
                 if(temp2!=-1){
-                    rectList[temp2].buang();
+                    presenter.rectList[temp2].buang();
                 }
-                startX=daftarKotakYangDibuat.get(temp).getRect().left;
-                startY=daftarKotakYangDibuat.get(temp).getRect().top;
+                startX=presenter.isiKotak.get(temp).getRect().left;
+                startY=presenter.isiKotak.get(temp).getRect().top;
                 pos1=motionEvent.getX();
                 pos2=motionEvent.getY();
-                for(int i =0;i<yangAkanDihitung.length;i++){
-                    if(yangAkanDihitung[i]==daftarKotakYangDibuat.get(indeksAktif)){
-                        yangAkanDihitung[i]=null;
+                for(int i =0;i<presenter.yangAkanDihitung.length;i++){
+                    if(presenter.yangAkanDihitung[i]==presenter.isiKotak.get(indeksAktif)){
+                        presenter.yangAkanDihitung[i]=null;
                     }
                 }
             }
@@ -310,8 +312,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int selisihY = (int) (motionEvent1.getY() - pos2);
                 resetCanvas();
 
-                int temp1=daftarKotakYangDibuat.get(indeksAktif).getRect().left;
-                int temp2=daftarKotakYangDibuat.get(indeksAktif).getRect().top;
+                int temp1=presenter.isiKotak.get(indeksAktif).getRect().left;
+                int temp2=presenter.isiKotak.get(indeksAktif).getRect().top;
 
                 presenter.geserKotak(indeksAktif,temp1+selisihX,temp2+selisihY);
 
@@ -330,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(temp1!=-1){
 
                 if(temp2!=-1){
-                    rectList[temp2].buang();
+                    presenter.rectList[temp2].buang();
                 }
                 presenter.removeKotak(temp1);
                 indeksAktif=-1;
