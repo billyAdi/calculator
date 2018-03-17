@@ -2,4 +2,5 @@
 <resources>
     <integer name="ukuranKotak">6</integer>
     <integer name="banyakKotak">12</integer>
+        <integer name="ukuranFont">12</integer>
 </resources>
