@@ -33,7 +33,11 @@ public class Hitungan{
         boolean isBalance=isBalance(s);
 
         for(int i = 0;i<str.size();i++){
-            if(str.get(i).equals("(")||str.get(i).equals(")")){
+            if(str.get(i).equals("(")){
+                if(nextAngka==false){return false;}
+                else{continue;}
+            }
+            else if(str.get(i).equals(")")){
                 continue;
             }
             else if (valid(str.get(i))){
@@ -43,7 +47,6 @@ public class Hitungan{
                 return false;
             }
         }
-
         if(nextAngka){
             return false;
         }
