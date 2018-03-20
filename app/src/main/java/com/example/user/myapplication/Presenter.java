@@ -3,7 +3,6 @@ package com.example.user.myapplication;
 
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -14,15 +13,18 @@ public class Presenter {
     private MainActivity ui;
     private Hitungan hitungan;
     protected ArrayList<IsiKotak> isiKotak;
+
+    public static ArrayList<IsiKotak> tempIsi;
+    public static int[] tempIndex;
     
     private ArrayList<String> hitung;
     protected IsiKotak[] yangAkanDihitung;
 
     protected KotakExtension[] rectList;
-    //protected ArrayList<IsiKotak> daftarKotakYangDibuat;
+    
 
     public Presenter(MainActivity ui) {
-        //this.daftarKotakYangDibuat=new ArrayList<IsiKotak>();
+        
         this.isiKotak=new ArrayList<IsiKotak>();
         this.rectList=new KotakExtension[ui.getResources().getInteger(R.integer.banyakKotak)];
         this.yangAkanDihitung=new IsiKotak[ui.getResources().getInteger(R.integer.banyakKotak)];
@@ -37,13 +39,6 @@ public class Presenter {
         return this.isiKotak;
     }
 
-    public IsiKotak[] getYangAkanDihitung(){
-        return this.yangAkanDihitung;
-    }
-
-    public KotakExtension[] getRectList(){
-        return this.rectList;
-    }
 
     public void geserKotak(int position,int x,int y){
         this.isiKotak.get(position).geser(x,y);
