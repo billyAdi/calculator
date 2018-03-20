@@ -1,6 +1,9 @@
 package com.example.user.myapplication;
 
 
+import android.util.Log;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -28,6 +31,18 @@ public class Presenter {
         
         this.hitungan=new Hitungan();
         this.hitung=new  ArrayList<String>();
+    }
+
+    public ArrayList<IsiKotak> getIsiKotak(){
+        return this.isiKotak;
+    }
+
+    public IsiKotak[] getYangAkanDihitung(){
+        return this.yangAkanDihitung;
+    }
+
+    public KotakExtension[] getRectList(){
+        return this.rectList;
     }
 
     public void geserKotak(int position,int x,int y){
@@ -63,6 +78,9 @@ public class Presenter {
     }
     public int insideBlueRect(float x,float y){
         for(int i = 0;i<this.isiKotak.size();i++) {
+
+            Log.d("Cekcek","Posisi kotakX: "+this.isiKotak.get(i).getRect().left+" "+this.isiKotak.get(i).getRect().right);
+            Log.d("Cekcek","Posisi kotakY: "+this.isiKotak.get(i).getRect().top+" "+this.isiKotak.get(i).getRect().bottom);
 
             if (this.isiKotak.get(i).getRect().left<=x && this.isiKotak.get(i).getRect().right>=x) {
                 if(this.isiKotak.get(i).getRect().top<=y&&this.isiKotak.get(i).getRect().bottom>=y){
@@ -175,10 +193,27 @@ public class Presenter {
         moveKeTengah(pos);
     }
 
+    public void updateUkuranBackground(int size,int banyakKotak){
+        int x = 25;
+        int y = 25;
+
+        for(int i =0;i<rectList.length;i++){
+
+            rectList[i].updateUkuranRect(x,y,x+size,y+size);
+            if((i+1)%banyakKotak!=0){
+                x+=25+size;
+            }
+            else{
+                x=25;
+                y+=25+size;
+            }
+        }
+    }
+
     public void moveKeTengah(int posisi){
         if(this.ui.indeksAktif!=-1){
 
-            this.rectList[posisi].isi(this.isiKotak.get(this.ui.indeksAktif));
+            this.rectList[posisi].isi(this.isiKotak.get(this.ui.indeksAktif),this.ui.indeksAktif);
             int temp1=this.isiKotak.get(this.ui.indeksAktif).getSize();
             int diff = (this.rectList[posisi].getRect().right-rectList[posisi].getRect().left-temp1)/2;
 
@@ -190,6 +225,26 @@ public class Presenter {
             this.ui.resetCanvas();
 
         }
+    }
+
+    public void updateKotakDitengah(int posisi){
+        int index=-1;
+
+        for(int i = 0;i<isiKotak.size();i++){
+            if(isiKotak.get(i)==this.rectList[posisi].getIsi()){
+                index=i;
+
+                break;
+
+            }
+        }
+        int temp1=this.isiKotak.get(index).getSize();
+        int diff = (this.rectList[posisi].getRect().right-rectList[posisi].getRect().left-temp1)/2;
+
+        int temp2=this.rectList[posisi].getRect().left+diff;
+        int temp3=this.rectList[posisi].getRect().top+diff;
+
+        this.geserKotak(index,temp2,temp3);
     }
 
     public int indexKotak(IsiKotak isi){

@@ -9,7 +9,9 @@ import android.graphics.Canvas;
 
 public class ThreadActivity implements  Runnable{
     private MainActivity main;
-    public ThreadActivity(MainActivity main){
+    private boolean sudahPernahDibuat;
+    public ThreadActivity(MainActivity main,boolean status){
+        this.sudahPernahDibuat=status;
         this.main=main;
     }
     @Override
@@ -19,5 +21,9 @@ public class ThreadActivity implements  Runnable{
         this.main.mCanvas=new Canvas(main.mBitmap);
         this.main.initializeCanvas();
         this.main.iv.invalidate();
+        if(sudahPernahDibuat){
+            this.main.updatePosisiKotak();
+        }
+
     }
 }

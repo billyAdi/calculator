@@ -41,6 +41,10 @@ public class IsiKotak {
         this.getRect().right=x+this.size;
         this.getRect().top=y;
         this.getRect().bottom=y+this.size;
+    }
 
+    public void updateUkuranRect(int left,int top,int right,int bottom){
+        this.rect.set(left,top,right,bottom);
+        this.size=(right-left);
     }
 }

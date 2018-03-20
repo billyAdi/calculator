@@ -1,5 +1,6 @@
 package com.example.user.myapplication;
 
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected Canvas mCanvas;
     protected Paint paint1,paint2,paint3;
 
+    private int[] indexIsi;
     protected int x,y,indeksAktif,yMin,sizeSlot;
 
     protected double startX,startY,pos1,pos2;
@@ -68,8 +71,117 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.buttonReset.setOnClickListener(this);
         this.buttonCalculate.setOnClickListener(this);
         this.iv.setOnTouchListener(this);
+        indexIsi = new int[presenter.rectList.length];
 
-        this.iv.post(new ThreadActivity(this));
+
+        this.iv.post(new ThreadActivity(this,false));
+    }
+
+    public void recreateTanpaSuper(){
+
+        setContentView(R.layout.activity_main);
+
+
+        this.button1=this.findViewById(R.id.btn_add1);
+        this.button2=this.findViewById(R.id.btn_add2);
+        this.buttonCalculate=this.findViewById(R.id.btn_calculate);
+        this.buttonReset=this.findViewById(R.id.btn_reset);
+        this.spinner=this.findViewById(R.id.spinner);
+        this.et=this.findViewById(R.id.et_number);
+        this.iv=this.findViewById(R.id.iv);
+        this.tv_hasil=this.findViewById(R.id.tv_hasil);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.operator, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        this.x=25;
+        this.indeksAktif=-1;
+        this.mGestureDetector=new GestureDetector(this,new MyCustomGestureListener());
+        this.spinner.setAdapter(adapter);
+        this.spinner.setOnItemSelectedListener(this);
+        this.button1.setOnClickListener(this);
+        this.button2.setOnClickListener(this);
+        this.buttonReset.setOnClickListener(this);
+        this.buttonCalculate.setOnClickListener(this);
+        this.iv.setOnTouchListener(this);
+
+
+        this.iv.post(new ThreadActivity(this,true));
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        indexIsi = new int[presenter.rectList.length];
+        for(int i =0;i<indexIsi.length;i++){
+            indexIsi[i]=presenter.rectList[i].getIndexIsi();
+        }
+        //setContentView(R.layout.activity_main);
+        recreateTanpaSuper();
+
+    }
+
+    public void updatePosisiKotak(){
+
+
+
+        double sizeX = iv.getWidth()/(getResources().getInteger(R.integer.ukuranKotak)+1);
+        double sizeY = iv.getHeight()/(getResources().getInteger(R.integer.ukuranKotak)+1);
+
+        this.sizeSlot = (int)(Math.min(sizeX,sizeY));
+
+        int banyakKotak=1;
+
+        int sizeMax = (int)(Math.max(sizeX,sizeY));
+        if(sizeX>sizeY){
+            banyakKotak=(iv.getWidth()/(sizeMax+25));
+        }
+        else{
+            banyakKotak=(iv.getHeight()/(sizeMax+25));
+        }
+        if(banyakKotak%2!=0){
+            banyakKotak--;
+        }
+
+        this.y=25+banyakKotak*sizeSlot;
+        int sizeIsi = (5*this.sizeSlot/6);
+
+        //this.initializeCanvas();
+
+        //this.presenter.updateUkuranBackground(sizeSlot,banyakKotak);
+
+        for(int i =0;i<this.presenter.isiKotak.size();i++){
+            this.presenter.isiKotak.get(i).updateUkuranRect(x,y,x+sizeIsi,y+sizeIsi);
+
+            if(this.x==25+4*(40+sizeIsi)){
+                if(this.y==this.yMin+2*(sizeIsi+30)){
+                    this.y=this.yMin;
+                }
+                else {
+
+                    this.y = this.y + 30 + sizeIsi;
+                }
+                this.x = 25;
+            }
+            else{
+                this.x=this.x+40+sizeIsi;
+            }
+        }
+
+
+
+        for(int i =0;i<this.presenter.rectList.length;i++){
+            if(indexIsi[i]!=-1){
+                this.presenter.rectList[i].isi(this.presenter.getIsiKotak().get(indexIsi[i]),indexIsi[i]);
+                this.presenter.updateKotakDitengah(i);
+            }
+
+
+        }
+
+        this.resetCanvas();
+
     }
 
     public void initializeCanvas(){
@@ -139,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void drawBlueRect(){
-        System.out.println(""+this.presenter.isiKotak.size());
+        //System.out.println(""+this.presenter.isiKotak.size());
         if(this.presenter.isiKotak.size()>0){
 
             for (int i=0;i<this.presenter.isiKotak.size();i++){
@@ -284,8 +396,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public boolean onDown(MotionEvent motionEvent) {
+
+
             int temp=presenter.insideBlueRect(motionEvent.getX(),motionEvent.getY());
             int temp2=presenter.insideRect(motionEvent.getX(),motionEvent.getY());
+            Log.d("Cekcek","Posisi mouse= "+motionEvent.getX()+" "+motionEvent.getY());
+            Log.d("Cekcek","Hasil pencarian = "+temp+" "+temp2);
             if(temp!=-1) {
                 indeksAktif=temp;
 
