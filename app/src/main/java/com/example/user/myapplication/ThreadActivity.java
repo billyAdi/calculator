@@ -31,7 +31,7 @@ public class ThreadActivity implements  Runnable{
 
             if(main.presenter.tempIsi!=null) {
                 main.presenter.isiKotak = main.presenter.tempIsi;
-                this.main.updatePosisiKotak();
+                this.main.presenter.updatePosisiKotak();
             }
 
 

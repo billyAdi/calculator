@@ -80,96 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
-
-        presenter.tempIndex = new int[presenter.rectList.length];
-
-
-
-            for (int i = 0; i < presenter.tempIndex.length; i++) {
-                System.out.println(
-                        presenter.rectList[i].getIndexIsi()
-                );
-                presenter.tempIndex[i] = presenter.rectList[i].getIndexIsi();
-            }
-
-
-        ArrayList<IsiKotak> isiKotak = presenter.getIsiKotak();
-        presenter.tempIsi= new ArrayList<IsiKotak>();
-
-        presenter.tempIsi.addAll(presenter.isiKotak);
-
-
-
-
+        this.presenter.rotate();
         recreate();
-
-
     }
 
-    public void updatePosisiKotak(){
-        for (int i = 0; i < presenter.tempIndex.length; i++) {
 
-
-        }
-
-        double sizeX = iv.getWidth()/(getResources().getInteger(R.integer.ukuranKotak)+1);
-        double sizeY = iv.getHeight()/(getResources().getInteger(R.integer.ukuranKotak)+1);
-
-        this.sizeSlot = (int)(Math.min(sizeX,sizeY));
-
-        int banyakKotak=1;
-
-
-        int sizeMax = (int)(Math.max(sizeX,sizeY));
-        if(sizeX>sizeY){
-            banyakKotak=(iv.getWidth()/(sizeMax+25));
-        }
-        else{
-            banyakKotak=(iv.getHeight()/(sizeMax+25));
-        }
-        if(banyakKotak%2!=0){
-            banyakKotak--;
-        }
-
-        this.y=25+banyakKotak*sizeSlot;
-        int sizeIsi = (5*this.sizeSlot/6);
-
-
-        for(int i =0;i<this.presenter.isiKotak.size();i++){
-            this.presenter.isiKotak.get(i).updateUkuranRect(x,y,x+sizeIsi,y+sizeIsi);
-
-            if(this.x==25+4*(40+sizeIsi)){
-                if(this.y==this.yMin+2*(sizeIsi+30)){
-                    this.y=this.yMin;
-                }
-                else {
-
-                    this.y = this.y + 30 + sizeIsi;
-                }
-                this.x = 25;
-            }
-            else{
-                this.x=this.x+40+sizeIsi;
-            }
-        }
-
-
-
-        for(int i =0;i<this.presenter.rectList.length;i++){
-            if(presenter.tempIndex[i]!=-1){
-
-                this.presenter.rectList[i].isi(this.presenter.getIsiKotak().get(presenter.tempIndex[i]),presenter.tempIndex[i]);
-                this.presenter.yangAkanDihitung[i] = this.presenter.rectList[i].getIsi();
-                this.presenter.updateKotakDitengah(i);
-            }
-
-
-        }
-
-        this.resetCanvas();
-
-    }
 
     public void initializeCanvas(){
         this.paint1 = new Paint();
@@ -206,7 +121,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             banyakKotak--;
         }
         this.sizeSlot=size;
-        this.y=25+banyakKotak*size;
+
+        this.y=25+(12/banyakKotak+1)*size;
         this.yMin=this.y;
 
         for(int i  = 0;i<getResources().getInteger(R.integer.banyakKotak);i++){

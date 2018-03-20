@@ -261,4 +261,90 @@ public class Presenter {
         }
         return indexKosong;
     }
+
+    public void updatePosisiKotak(){
+        for (int i = 0; i < this.tempIndex.length; i++) {
+
+
+        }
+
+        double sizeX = this.ui.iv.getWidth()/(this.ui.getResources().getInteger(R.integer.ukuranKotak)+1);
+        double sizeY = this.ui.iv.getHeight()/(this.ui.getResources().getInteger(R.integer.ukuranKotak)+1);
+
+        this.ui.sizeSlot = (int)(Math.min(sizeX,sizeY));
+
+        int banyakKotak=1;
+
+
+        int sizeMax = (int)(Math.max(sizeX,sizeY));
+        if(sizeX>sizeY){
+            banyakKotak=(this.ui.iv.getWidth()/(sizeMax+25));
+        }
+        else{
+            banyakKotak=(this.ui.iv.getHeight()/(sizeMax+25));
+        }
+        if(banyakKotak%2!=0){
+            banyakKotak--;
+        }
+
+        this.ui.y=25+(12/banyakKotak+1)*this.ui.sizeSlot;
+
+
+        int sizeIsi = (5*this.ui.sizeSlot/6);
+
+
+        for(int i =0;i<this.isiKotak.size();i++){
+            this.isiKotak.get(i).updateUkuranRect(this.ui.x,this.ui.y,this.ui.x+sizeIsi,this.ui.y+sizeIsi);
+
+            if(this.ui.x==25+4*(40+sizeIsi)){
+                if(this.ui.y==this.ui.yMin+2*(sizeIsi+30)){
+                    this.ui.y=this.ui.yMin;
+                }
+                else {
+
+                    this.ui.y = this.ui.y + 30 + sizeIsi;
+                }
+                this.ui.x = 25;
+            }
+            else{
+                this.ui.x=this.ui.x+40+sizeIsi;
+            }
+        }
+
+
+
+        for(int i =0;i<this.rectList.length;i++){
+            if(tempIndex[i]!=-1){
+
+                this.rectList[i].isi(this.getIsiKotak().get(tempIndex[i]),tempIndex[i]);
+                this.yangAkanDihitung[i] = this.rectList[i].getIsi();
+                this.updateKotakDitengah(i);
+            }
+
+
+        }
+
+        this.ui.resetCanvas();
+
+    }
+
+    public void rotate(){
+        tempIndex = new int[rectList.length];
+
+
+
+        for (int i = 0; i < tempIndex.length; i++) {
+            System.out.println(
+                    rectList[i].getIndexIsi()
+            );
+            tempIndex[i] = rectList[i].getIndexIsi();
+        }
+
+
+        ArrayList<IsiKotak> isiKotak = getIsiKotak();
+        tempIsi= new ArrayList<IsiKotak>();
+
+        tempIsi.addAll(isiKotak);
+
+    }
 }
