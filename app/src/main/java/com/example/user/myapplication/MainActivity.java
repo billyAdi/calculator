@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             banyakKotak--;
         }
         this.sizeSlot=size;
-        this.y=25+banyakKotak*size;
+        this.y=25+(12/banyakKotak+1)*size;
         this.yMin=this.y;
 
         for(int i  = 0;i<getResources().getInteger(R.integer.banyakKotak);i++){
@@ -210,10 +210,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         this.tv_hasil.setText(str);
                     }
                 }
-                else{
-                    Toast toast=Toast.makeText(this,"Dibagi 0",Toast.LENGTH_LONG);
-                    toast.show();
-                }
+
             }
             else{
 
