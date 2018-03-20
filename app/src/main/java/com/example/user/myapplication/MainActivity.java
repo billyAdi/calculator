@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        this.iv.post(new ThreadActivity(this,false));
+        this.iv.post(new ThreadActivity(this));
     }
 
 
