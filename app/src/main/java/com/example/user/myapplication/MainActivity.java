@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if(presenter.tempIndex[i]!=-1){
 
                 this.presenter.rectList[i].isi(this.presenter.getIsiKotak().get(presenter.tempIndex[i]),presenter.tempIndex[i]);
+                this.presenter.yangAkanDihitung[i] = this.presenter.rectList[i].getIsi();
                 this.presenter.updateKotakDitengah(i);
             }
 
@@ -226,6 +227,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void resetCanvas(){
         this.mCanvas.drawColor(Color.WHITE);
         this.drawSlot();
+        this.presenter.tempIsi= null;
+        this.presenter.tempIndex= null;
         this.drawBlueRect();
         this.iv.invalidate();
     }
