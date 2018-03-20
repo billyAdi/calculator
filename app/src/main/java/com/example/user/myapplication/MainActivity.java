@@ -227,8 +227,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void resetCanvas(){
         this.mCanvas.drawColor(Color.WHITE);
         this.drawSlot();
-        this.presenter.tempIsi= null;
-        this.presenter.tempIndex= null;
         this.drawBlueRect();
         this.iv.invalidate();
     }
@@ -325,6 +323,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         else if(view.getId()==this.buttonReset.getId()){
+            this.presenter.tempIsi= null;
+            this.presenter.tempIndex= null;
             recreate();
             this.et.setText("");
             this.spinner.setSelection(0);
