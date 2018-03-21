@@ -2,9 +2,7 @@ package com.example.user.myapplication;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 
-import java.util.ArrayList;
 
 /**
  * Created by WIN 10 on 3/3/2018.

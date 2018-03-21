@@ -1,7 +1,6 @@
 package com.example.user.myapplication;
 
 
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -74,8 +73,7 @@ public class Presenter {
     public int insideBlueRect(float x,float y){
         for(int i = 0;i<this.isiKotak.size();i++) {
 
-            Log.d("Cekcek","Posisi kotakX: "+this.isiKotak.get(i).getRect().left+" "+this.isiKotak.get(i).getRect().right);
-            Log.d("Cekcek","Posisi kotakY: "+this.isiKotak.get(i).getRect().top+" "+this.isiKotak.get(i).getRect().bottom);
+
 
             if (this.isiKotak.get(i).getRect().left<=x && this.isiKotak.get(i).getRect().right>=x) {
                 if(this.isiKotak.get(i).getRect().top<=y&&this.isiKotak.get(i).getRect().bottom>=y){
@@ -334,9 +332,6 @@ public class Presenter {
 
 
         for (int i = 0; i < tempIndex.length; i++) {
-            System.out.println(
-                    rectList[i].getIndexIsi()
-            );
             tempIndex[i] = rectList[i].getIndexIsi();
         }
 

@@ -8,8 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -154,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void drawBlueRect(){
-        //System.out.println(""+this.presenter.isiKotak.size());
         if(this.presenter.isiKotak.size()>0){
 
             for (int i=0;i<this.presenter.isiKotak.size();i++){
@@ -305,8 +302,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             int temp=presenter.insideBlueRect(motionEvent.getX(),motionEvent.getY());
             int temp2=presenter.insideRect(motionEvent.getX(),motionEvent.getY());
-            Log.d("Cekcek","Posisi mouse= "+motionEvent.getX()+" "+motionEvent.getY());
-            Log.d("Cekcek","Hasil pencarian = "+temp+" "+temp2);
             if(temp!=-1) {
                 indeksAktif=temp;
 
